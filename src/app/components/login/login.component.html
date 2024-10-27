@@ -1,0 +1,43 @@
+
+<div class="container">
+  <div class="row justify-content-center">
+      <div class="col-md-10 reg-container card-top">
+        <div class="card mt-5">
+            <div class="card-header">
+                <h1 class="text-center mt-3 h1-custom">Inicio de sesion</h1>
+            </div>
+            <div class="card-body">
+                <form [formGroup]="formLogin" (ngSubmit)="login()" class="d-flex justify-content-center row">
+                  <div class="col-8 my-3">
+                    <label for="nombre" class="form-label">Correo electrónico</label>
+                    <input type="text" class="form-control" id="nombre" [formControl]="formLogin.controls.email">
+                  </div>
+                  
+                  <div class="col-8 my-3">
+                      <label for="apellido" class="form-label">Contraseña</label>
+                      <input type="password" class="form-control" id="apellido" [formControl]="formLogin.controls.pass">
+                  </div>
+
+                  <p *ngIf="errorMsg != ''" class="errorMsg col-8">{{errorMsg}}</p>
+                  
+                  <button type="button" class="btn btn-custom mt-5 mb-4 me-3 col-4" (click)="volver()">Cancelar</button>
+                  <button [disabled]="formLogin.invalid" type="submit" class="btn btn-reg mt-5 mb-4 ms-3 col-4">Ingresar</button>
+                </form>
+
+                <div class="w-100 d-flex justify-content-center">
+                  <div class="w-50 d-flex justify-content-around">
+  
+                    <a class="rapido-a" (click)="fillInputs('josefaker@yopmail.com', '123jose')">Paciente</a>
+                    <a class="rapido-a" (click)="fillInputs('dr.juansardi@yopmail.com', '123juan')">Especialista</a>
+                    <a class="rapido-a" (click)="fillInputs('lautaromonserrat13@gmail.com', '123lauty')">Administrador</a>
+                  </div>
+                </div>
+                
+                <div class="spinner-bg mt-4" *ngIf="isLoading">
+                  <mat-spinner></mat-spinner>
+                </div>
+            </div>
+        </div>
+      </div>
+  </div>
+</div>

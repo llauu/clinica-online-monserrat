@@ -1,0 +1,73 @@
+.error-msg {
+    position: absolute;
+    font-size: 15px;
+    margin: 0;
+}
+
+.errorMsg {
+    color: red;
+    font-size: 15px;
+    margin: 0;
+
+}
+
+.card-header {
+    background-color: #E4E4E4;
+    border: none;
+}
+
+.card-body {
+    background-color: #E4E4E4;
+    border: none;
+}
+
+.card-body-form {
+    background-color: #E4E4E4;
+    border: none;
+    height: 890px;
+    padding: 16px;
+}
+
+.card-top {
+    margin: 150px 0px;
+}
+
+.btn-sel {
+    width: 280px;
+    transition: opacity 0.2s ease;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.btn-sel:hover {
+    opacity: 0.3;
+}
+
+.img-btn-sel {
+    width: 220px;
+}
+
+.h1-custom {
+    font-weight: 900;
+    font-size: 30px;
+    color: #183058;
+}
+
+.btn-custom {
+    background-color: #183058;
+    color: white;
+}
+
+.btn-reg {
+    background-color: white;
+}
+
+.spinner-bg {
+    /* background-color: #183058;
+    color: white;
+    width: 50px;
+    height: 50px; */
+    height: 258px;
+    display: flex;
+    justify-content: center;
+}
