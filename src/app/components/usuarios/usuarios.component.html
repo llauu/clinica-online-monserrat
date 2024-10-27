@@ -35,7 +35,7 @@
             </ng-container>
             
             <ng-container matColumnDef="rol">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p der" id="der"> <b>Rol</b> </th>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p der" id="der"> <b>Perfil</b> </th>
                 <td mat-cell *matCellDef="let row" class="fila-usuario" (click)="onClickUsuario(row)"> {{row.rol}} </td>
             </ng-container>
     
@@ -78,7 +78,7 @@
                         <b>Correo</b>
                         <p>{{usuarioSeleccionado.email}}</p>
 
-                        <b>Rol</b>
+                        <b>Perfil</b>
                         <p>{{usuarioSeleccionado.rol}}</p>
     
                         @switch (usuarioSeleccionado.rol) {
