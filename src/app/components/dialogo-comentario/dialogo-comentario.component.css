@@ -1,0 +1,26 @@
+.dialog-h {
+    font-weight: 900;
+    font-size: 23px;
+    color: #183058;
+}
+
+.p-dialog {
+    font-size: 17px;
+    color: #000000;
+    font-weight: 500;
+}
+
+.text-area-dialog {
+    width: 100%;
+    height: 100px;
+    padding-left: 6px;
+}
+
+.text-area-dialog :focus {
+    border: none !important;
+    box-shadow: none;
+}
+
+.div-dialog {
+    width: 600px;
+}

@@ -74,7 +74,7 @@ export class LoginComponent {
 
     this.authService.login(this.formLogin.value.email, this.formLogin.value.pass)
       .then((res: any) => {
-        console.log(res);
+        // console.log(res);
 
         if(res.user.email !== null) {
           this.isLoading = true;

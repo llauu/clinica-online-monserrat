@@ -32,7 +32,7 @@ export class AppComponent {
         this.isLogged = true;
         this.firstTime = false;
 
-        this.userService.getUserProfile(user.uid)
+        this.userService.getUserProfile()
           .then((res: any) => {
             this.userData = res;
             this.rol = res.rol;

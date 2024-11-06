@@ -40,6 +40,7 @@ export class UsuariosComponent {
   @ViewChild(MatSort) sort!: MatSort;
 
   usuarioSeleccionado: any = null;
+  especialidadesEspecialista: string[] = [];
 
   constructor(private firestoreService: FirestoreService, private router: Router) { }
 
@@ -66,6 +67,15 @@ export class UsuariosComponent {
 
   onClickUsuario(usuario: any) {
     this.usuarioSeleccionado = usuario;
+
+    if(this.usuarioSeleccionado.rol === 'especialista') {
+      if (typeof this.usuarioSeleccionado.especialidad === 'object') {
+        this.especialidadesEspecialista = Object.keys(this.usuarioSeleccionado.especialidad);
+      }
+      else {
+        console.error('Error al obtener las especialidades del usuario');
+      }
+    }
   }
 
   habilitarEspecialista() {

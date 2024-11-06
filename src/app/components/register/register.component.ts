@@ -106,9 +106,23 @@ export class RegisterComponent {
 
   get especialidadesSeleccionadas() {
     const especialidadesFormArray = this.form.get('especialidades') as FormArray;
-    return especialidadesFormArray.controls
-      .map((control, index) => control.value ? this.especialidadesDisponibles[index] : null)
-      .filter(especialidad => especialidad !== null);
+    const especialidadesEstructura: { [key: string]: { dia: string, hora_inicio: string, hora_fin: string }[] } = {};
+  
+    const diasSemana = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
+  
+    especialidadesFormArray.controls.forEach((control, index) => {
+      if (control.value) {
+        const especialidad = this.especialidadesDisponibles[index];
+        
+        especialidadesEstructura[especialidad] = diasSemana.map(dia => ({
+          dia,
+          hora_inicio: '0',
+          hora_fin: '0'
+        }));
+      }
+    });
+  
+    return especialidadesEstructura;
   }
 
   register() {
@@ -161,6 +175,10 @@ export class RegisterComponent {
               this.errorMsg = 'El correo electronico no es valido.';
               break;
 
+            case 'auth/weak-password':
+              this.errorMsg = 'La contraseña debe tener al menos 6 caracteres.';
+              break;
+
             case 'auth/missing-password': 
               this.errorMsg = 'La contraseña no es valida.';
               break;
@@ -206,7 +224,7 @@ export class RegisterComponent {
     
     if(inputEl.value != '' && this.verificarEspecialidad(inputEl.value)) {
       this.errorMsjEspecialidad = '';
-      this.firestoreService.createDocument('especialidades', {nombre: inputEl.value});
+      this.firestoreService.createDocument('especialidades', {nombre: inputEl.value, imagen: 'https://images.vexels.com/content/151981/preview/stethoscope-icon-medical-icons-f7267f.png'});
       this.especialidadesDisponibles.push(inputEl.value);
   
       this.form.patchValue({

@@ -1,0 +1,96 @@
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10 reg-container card-top">
+          <div class="card mt-5">
+              <div class="card-header">
+                  <h1 class="text-center mt-3 h1-custom">Mi perfil</h1>
+              </div>
+              <div class="card-body">
+                <div class="div-imgs">
+                    <img src={{user.imagenUno}} class="img-perfil mx-4" alt="Imagen uno">
+                    <img src={{user.imagenDos}} *ngIf="user.rol === 'paciente'" class="img-perfil mx-4" alt="Imagen dos">
+                </div>
+
+                <div class="form-container">
+                    <div class="perfil mt-5 pb-4">
+                        <div class="perfil-dato">
+                          <span>Nombre</span> <span>{{user.nombre}}</span>
+                        </div>
+                        <div class="perfil-dato">
+                          <span>Apellido</span> <span>{{user.apellido}}</span>
+                        </div>
+                        <div class="perfil-dato">
+                          <span>Edad</span> <span>{{user.edad}}</span>
+                        </div>
+                        <div class="perfil-dato">
+                          <span>DNI</span> <span>{{user.dni}}</span>
+                        </div>
+                        <div class="perfil-dato">
+                          <span>Correo</span> <span>{{user.email}}</span>
+                        </div>
+                        <div class="perfil-dato">
+                          <span>Perfil</span> <span>{{user.rol}}</span>
+                        </div>
+
+
+                    @switch (user.rol) {
+                        @case ('paciente') {
+                            <div class="perfil-dato">
+                              <span>Obra social</span> <span>{{user.obraSocial}}</span>
+                            </div>
+                        }
+                        @case ('especialista') {
+                            <div class="perfil-dato">
+                              <span>Habilitado</span> <span>{{user.habilitado ? 'Si' : 'No'}}</span>
+                            </div>
+                            
+
+                            <div class="perfil-dato">
+                              <span>Especialidad</span>
+                              
+                              <select class="form-select form-select-sm custom-select" [(ngModel)]="selectedSpecialty" (change)="onSpecialtyChange()" aria-label="Selecciona una especialidad">
+                                <option *ngFor="let specialty of especialidadesEspecialista" [value]="specialty">{{ specialty }}</option>
+                              </select>
+                            </div>
+                        }
+                    }
+                </div>
+                
+                <div class="div-horarios mt-5" *ngIf="selectedSpecialty">
+                  <span class="h-cambio-horario mb-3">Horarios para {{ selectedSpecialty }}</span>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th class="th-horas"></th>
+                        <th class="th-horas th-horas-dias" *ngFor="let day of weekDays">{{ day }}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="th-horas">Entrada</td>
+                        <td *ngFor="let day of weekDays" class="th-horas-datos" [appHorarios]="schedule[day].start">
+                          <input type="number" [appHorarios]="schedule[day].start" [(ngModel)]="schedule[day].start">hs
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="th-horas">Salida</td>
+                        <td *ngFor="let day of weekDays" class="th-horas-datos" [appHorarios]="schedule[day].end">
+                          <input type="number" [appHorarios]="schedule[day].end" [(ngModel)]="schedule[day].end">hs
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                    
+
+                  <p class="errorMsg mt-3">{{this.messageError}}</p>
+                  <p class="msg-exito mt-3" *ngIf="horariosActualizados">¡Horarios actualizados con exito!</p>
+                
+                  <button type="submit" class="btn btn-reg mt-5 col-4" (click)="updateSchedule()">Guardar</button>
+                </div>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  

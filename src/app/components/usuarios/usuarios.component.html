@@ -88,11 +88,16 @@
                             }
                             @case ('especialista') {
                                 <b>Especialidad</b>
-                                <p>{{usuarioSeleccionado.especialidad}}</p>
+                                <p>
+                                    @for (especialidad of especialidadesEspecialista; track $index) {
+                                        {{especialidad}} - 
+                                    }
+                                </p>
+
                                 <div class="d-flex flex-column">
                                     <b>Habilitado</b> 
                                     @if (usuarioSeleccionado.habilitado) {
-                                        <img src="assets/check.png" width="25" height="25" alt="So">
+                                        <img src="assets/check.png" width="25" height="25" alt="Si">
                                     } @else {
                                         <div>
                                             <img src="assets/uncheck.png" width="25" height="25" alt="No">

@@ -1,0 +1,121 @@
+.errorMsg {
+    color: red;
+    font-size: 15px;
+    margin: 0;
+}
+
+.card-header {
+    background-color: #E4E4E4;
+    border: none;
+}
+
+.card-body {
+    background-color: #E4E4E4;
+    border: none;
+    height: 600px;
+}
+
+.card-top {
+    margin: 0px;
+    margin-top: 150px;
+    margin-bottom: 50px;
+}
+
+.h1-custom {
+    font-weight: 900;
+    font-size: 30px;
+    color: #183058;
+}
+
+.spinner-bg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mat-stepper-horizontal {
+    margin-top: 8px;
+}
+
+.mat-mdc-form-field {
+    margin-top: 16px;
+}
+  
+mat-stepper {
+    height: 470px;
+}
+
+.div-dias-horarios {
+    max-height: 380px;
+    overflow-y: auto;
+}
+
+button { 
+    list-style-type: none;
+    background-color: #183058;
+    border-radius: 3px;
+    margin: 4px;
+    color: white !important;
+}
+
+
+.btns-stepper {
+    display: flex;
+    justify-content: end;
+    margin-top: 25px;
+}
+
+.btns-stepper button {
+    background-color: #183058;
+    color: white;
+    margin: 0px 15px;
+    font-size: 18px;
+    font-weight: 700;
+    width: 200px;
+    height: 60px;
+    bottom: 0;
+    right: 0;
+}
+
+.btns-stepper button:hover {
+    background-color: #1976d2;
+}
+
+.boton-seleccionado {
+    background-color: #1976d2;
+    color: white;
+}
+
+.title-step {
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.btn-especialidad {
+    width: 90px;
+    height: 90px;
+}
+
+.btn-especialista {
+    width: 170px;
+    height: 170px;
+}
+
+.div-cosas-turno {
+    min-height: 400px;
+    width: 100%;
+}
+
+/* mat-stepper mat-step {
+    background-color: red !important;
+}
+
+
+
+.btns-stepper {
+    background-color: red !important;
+    height: 310px;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+} */

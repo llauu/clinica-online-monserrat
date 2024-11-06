@@ -8,12 +8,12 @@
             </div>
             <div class="card-body d-flex flex-column justify-content-center align-items-center" *ngIf="regPaciente == null">
                 <h2 class="mb-4">¿Como se desea registrar?</h2>
-                <div class="container d-flex justify-content-center my-3" *ngIf="especialidadesCargadas === true">
+                <div class="container d-flex flex-column align-items-center my-3" *ngIf="especialidadesCargadas === true">
 
-                    <button class="btn btn-primary col-4 mx-3" class="btn-sel mx-4" (click)="configurarFormulario('paciente')">
+                    <button class="btn btn-primary col-4" class="btn-sel my-3" (click)="configurarFormulario('paciente')">
                         <img src="assets/paciente.jpg" class="img-btn-sel" alt="Paciente">
                     </button>
-                    <button class="btn btn-primary col-4 mx-3" class="btn-sel mx-4" (click)="configurarFormulario('especialista')">
+                    <button class="btn btn-primary col-4" class="btn-sel my-3" (click)="configurarFormulario('especialista')">
                         <img src="assets/doctor.jpg" class="img-btn-sel" alt="Especialista">
                     </button>
                 </div>

@@ -1,1 +1,97 @@
-<p>solicitar-turno works!</p>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12 reg-container card-top">
+          <div class="card mt-5">
+              <div class="card-header">
+                  <h1 class="text-center mt-3 h1-custom">Solicitar turno</h1>
+              </div>
+              <div class="card-body">
+                  <mat-stepper [linear]=true #stepper>
+                    <mat-step label="Selecciona un paciente" *ngIf="this.rolUsuarioIniciado == 'admin'">
+                        <ng-template matStepLabel>Seleccionar Paciente</ng-template>
+                        <div class="div-cosas-turno">
+                            <mat-label class="title-step">Paciente</mat-label>
+                            <ul class="container col-12 row mt-4">
+                                    <button mat-button [value]="paciente" *ngFor="let paciente of pacientesDisponibles" (click)="pacienteSeleccionado = paciente" class="btn-especialista" [ngClass]="{'boton-seleccionado': pacienteSeleccionado === paciente}"
+                                    >
+                                        <p>{{paciente.apellido + ", " + paciente.nombre}}</p>
+                                        <img src="{{paciente.imagenUno}}" width="100px">
+                                    </button>
+                            </ul>
+                        </div>
+
+                        <div class="btns-stepper position-absolute bottom-0 end-0 mb-4">
+                            <button mat-button matStepperNext [disabled]="!pacienteSeleccionado">Siguiente</button>
+                        </div>
+                    </mat-step>
+
+                    <mat-step>
+                        <ng-template matStepLabel>{{especialidadSeleccionada != '' ? especialidadSeleccionada : 'Seleccionar Especialidad'}}</ng-template>
+                        
+                        <div class="div-cosas-turno">
+                            <mat-label class="title-step">Especialidad</mat-label>
+                            <ul class="container col-12 row mt-4">
+                                <button mat-button [value]="especialidad" *ngFor="let especialidad of especialidadesDisponibles" (click)="especialidadSeleccionada = especialidad.nombre" class="col-2 btn-especialidad" [ngClass]="{'boton-seleccionado': especialidadSeleccionada === especialidad.nombre}">
+                                    <img title="{{especialidad.nombre}}" src="{{especialidad.imagen}}" width="75px" alt="">
+                                </button>
+                            </ul>
+                        </div>
+                    
+                        <div class="btns-stepper position-absolute bottom-0 end-0 mb-4">
+                            <button mat-button matStepperPrevious *ngIf="this.rolUsuarioIniciado == 'admin'" >Atras</button>
+                            <button mat-button matStepperNext (click)="traerEspecialistas()" [disabled]="!especialidadSeleccionada">Siguiente</button>
+                        </div>
+                    </mat-step>
+
+                    <mat-step label="Selecciona un especialista">
+                        <ng-template matStepLabel>{{especialistaSeleccionado != null ? especialistaSeleccionado.apellido + ', ' + especialistaSeleccionado.nombre : 'Seleccionar Especialista'}}</ng-template>
+                        <div class="div-cosas-turno">
+                            <mat-label class="title-step">Especialista</mat-label>
+                            <ul class="container col-12 row mt-4">
+                                    <button mat-button [value]="especialista" *ngFor="let especialista of especialistasDisponibles" (click)="especialistaSeleccionado = especialista" class="btn-especialista" [ngClass]="{'boton-seleccionado': especialistaSeleccionado === especialista}"
+                                    >
+                                        <p>{{especialista.apellido + ", " + especialista.nombre}}</p>
+                                        <img src="{{especialista.imagenUno}}" width="100px">
+                                    </button>
+                            </ul>
+                        </div>
+
+                        <div class="btns-stepper position-absolute bottom-0 end-0 mb-4">
+                            <button mat-button matStepperPrevious (click)="atras()">Atras</button>
+                            <button mat-button matStepperNext [disabled]="!especialistaSeleccionado" (click)="obtenerTurnosDisponibles()">Siguiente</button>
+                        </div>
+                    </mat-step>
+
+                    <mat-step>
+                        <ng-template matStepLabel>Seleccionar Turno</ng-template>
+  
+                        <div class="div-dias-horarios div-cosas-turno">
+                            <mat-label class="title-step">Horario</mat-label>
+
+                            <div *ngFor="let dia of diasDisponibles" class=" mt-4">
+                                <h4> <b>{{ dia.dia }} ({{ dia.fecha }})</b> </h4>
+                                <div *ngIf="turnosDisponibles[dia.dia] && turnosDisponibles[dia.dia].length > 0; else noTurnos">
+                                  <ul class="container row text-center">
+                                      <button mat-button *ngFor="let hora of turnosDisponibles[dia.dia]" class="col-1" (click)="seleccionarTurno(dia.fecha, hora)" [ngClass]="{'boton-seleccionado': turnoSeleccionado?.fecha === dia.fecha && turnoSeleccionado?.hora === hora}">{{ hora }}</button>
+                                  </ul>
+                                </div>
+                                <ng-template #noTurnos>
+                                  <p>No hay turnos disponibles.</p>
+                                </ng-template>
+                            </div>
+                        </div>
+
+                        <div class="btns-stepper position-absolute bottom-0 end-0 mb-4">
+                            <button mat-button matStepperPrevious>Atras</button>
+                            <button mat-button (click)="solicitarTurno()" [disabled]="!turnoSeleccionado">Solicitar</button>
+                        </div>
+                    </mat-step>
+                  </mat-stepper>
+                  
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+  

@@ -32,21 +32,21 @@
           <button class="nav-link" routerLink="solicitar-turno" routerLinkActive="ruta-activa">Solicitar turno</button>
         </li>
         <li class="nav-item dropdown mx-3 d-flex" *ngIf="isLogged">
-          <button  class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <b>{{userData.nombre + ' ' + userData.apellido}}</b> </button>
+          <button  class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <b>{{ userData ? userData.nombre + ' ' + userData.apellido : '' }}</b> </button>
           
           <div class="dropdown-menu dropdown-menu-end mb-3 rounded-bottom" aria-labelledby="navbarDropdown">
             <div class="col img-container text-center">
-              <img src="{{userData.imagenUno}}" width="110" class="img-user" alt="Perfil">
+              <img src="{{ userData ? userData.imagenUno : ''}}" width="110" class="img-user" alt="Perfil">
             </div>
             <div class="dropdown-divider"></div>
             <b class="dropdown-item-text logout-text mt-1">Datos</b>
-            <span class="dropdown-item-text logout-text">{{ userData.nombre + ' ' + userData.apellido }}</span> 
-            <span class="dropdown-item-text logout-text">{{ userData.email }}</span> 
+            <span class="dropdown-item-text logout-text">{{ userData ? userData.nombre + ' ' + userData.apellido : '' }}</span> 
+            <span class="dropdown-item-text logout-text">{{ userData ? userData.email : ''}}</span> 
             <span class="dropdown-item-text logout-text mb-4">Perfil de {{ rol }}</span> 
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" routerLink="mi-perfil"><b class="logout-text">Mi perfil</b></a> 
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" (click)="logout()"><b class="logout-text">Cerrar sesion</b></a> 
+            <div class="dropdown-divider div-custom"></div>
+            <a class="dropdown-item a-custom" routerLink="perfil"><b class="logout-text">Mi perfil</b></a> 
+            <div class="dropdown-divider div-custom"></div>
+            <a class="dropdown-item a-custom" (click)="logout()"><b class="logout-text">Cerrar sesion</b></a> 
           </div>
         </li>
   

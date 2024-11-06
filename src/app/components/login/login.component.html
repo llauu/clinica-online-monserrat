@@ -24,17 +24,22 @@
                   <button [disabled]="formLogin.invalid" type="submit" class="btn btn-reg mt-5 mb-4 ms-3 col-4">Ingresar</button>
                 </form>
 
-                <div class="w-100 d-flex justify-content-center">
-                  <div class="w-50 d-flex justify-content-around">
-  
-                    <a class="rapido-a" (click)="fillInputs('josefaker@yopmail.com', '123jose')">Paciente</a>
-                    <a class="rapido-a" (click)="fillInputs('dr.juansardi@yopmail.com', '123juan')">Especialista</a>
-                    <a class="rapido-a" (click)="fillInputs('lautaromonserrat13@gmail.com', '123lauty')">Administrador</a>
-                  </div>
-                </div>
-                
-                <div class="spinner-bg mt-4" *ngIf="isLoading">
+                <div class="spinner-bg mt-3" *ngIf="isLoading">
                   <mat-spinner></mat-spinner>
+                </div>
+
+                <div class="w-100 d-flex justify-content-end">
+                    <!-- Pacientes -->
+                    <img src="https://firebasestorage.googleapis.com/v0/b/clinica-online-monserrat.appspot.com/o/02G53Hj08oM2igbfXDn3Ni9x4jA2%2FimagenUno?alt=media&token=c609c705-83cd-4c28-b54d-f2c3a42629d0" class="favicon-user shadow mx-2" (click)="fillInputs('josefaker@yopmail.com', '123jose')" alt="">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/clinica-online-monserrat.appspot.com/o/EbPZrDWMV8QnebvMywCbbjEQKBC3%2FimagenUno?alt=media&token=0b820254-3078-457b-a28c-94aa36257c3d" class="favicon-user shadow mx-2" (click)="fillInputs('martinpaciente@yopmail.com', '123martin')" alt="">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/clinica-online-monserrat.appspot.com/o/uu9PDerqHoMwa3vyjLQyYHYctEF2%2FimagenUno?alt=media&token=1c321b8f-f1a1-4c8c-b0e4-ab76e3ea7e71" class="favicon-user shadow mx-2" (click)="fillInputs('darioguzman@yopmail.com', '123dario')" alt="">
+
+                    <!-- Especialistas -->
+                    <img src="https://firebasestorage.googleapis.com/v0/b/clinica-online-monserrat.appspot.com/o/3qen4E4SqWfXp94OxT8OnBwMGhp1%2FimagenUno?alt=media&token=8dfef3c5-56df-4d5d-95c8-0b82aa9a3842" class="favicon-user shadow mx-2" (click)="fillInputs('dr.sebastian@yopmail.com', '123sebas')" alt="">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/clinica-online-monserrat.appspot.com/o/MkFNLJFf0pen8VVn2cEujLAIcQC2%2FimagenUno?alt=media&token=b6775410-1822-4d84-bc56-39a38cb4135c" class="favicon-user shadow mx-2" (click)="fillInputs('dr.jorgesardi@yopmail.com', '123sardi')" alt="">
+
+                    <!-- Admin -->
+                    <img src="https://firebasestorage.googleapis.com/v0/b/clinica-online-monserrat.appspot.com/o/1pEGY6WEkZUGlex7rAyYSQqeeZx2%2FimagenUno?alt=media&token=68a511a3-b745-4403-8e2c-3cb6742d756b" class="favicon-user shadow mx-2" (click)="fillInputs('lautaromonserrat13@gmail.com', '123lauty')" alt="">
                 </div>
             </div>
         </div>

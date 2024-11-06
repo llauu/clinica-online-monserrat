@@ -36,7 +36,7 @@ export class UserService {
           this.user = res;
           this.logged = true;
 
-          this.getUserProfile(res.uid);
+          this.getUserProfile();
         } else {
           this.user = null;
           this.logged = false;
@@ -46,26 +46,23 @@ export class UserService {
     });
   }
   
-  async getUserProfile(uid: string) {
+  async getUserProfile() {
     return new Promise( async (resolve) => {
         if (this.userProfile) {
           resolve(this.userProfile);
           return;
         }
 
-        const response = await this.firestoreService.getDocument(`usuarios/${uid}`)
+        const response = await this.firestoreService.getDocument(`usuarios/${this.user.uid}`)
         if (response.exists()) {  
             this.userProfile = response.data();
             resolve(this.userProfile);
             if (this.userProfile.email != this.user.email) {
               console.log('sincronizar email');
               const updateData = {email: this.user.email};
-              this.firestoreService.updateDocument(`usuarios/${uid}`, updateData)
+              this.firestoreService.updateDocument(`usuarios/${this.user.uid}`, updateData)
             }
-        } 
-        // else {
-        //   this.router.navigate(['/user/completar-registro'])
-        // }
+        }
     });
   }
 
@@ -75,6 +72,14 @@ export class UserService {
 
   getRol() {
     return this.userProfile.rol;
+  }
+
+  getNombreApellido() {
+    return this.userProfile.nombre + ' ' + this.userProfile.apellido;
+  }
+
+  getId() {
+    return this.userProfile.id;
   }
 
   logout() {
