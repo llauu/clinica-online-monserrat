@@ -58,7 +58,7 @@
                     </button>
 
                     <button mat-button *ngIf="row.comentario" class="btn-accion shadow-sm me-2" (click)="verComentario(row)">
-                        Ver reseña
+                        {{row.estado === 'finalizado' ? 'Ver reseña' : 'Ver comentario'}}
                     </button>
                     
                     <!-- boton para apciente -->

@@ -90,4 +90,21 @@ export class TurnosComponent {
     });
   }
 
+
+  verComentario(row: any) {
+    const dialogRef = this.dialog.open(DialogoComentarioComponent, {
+      data: {
+        titulo: 'Reseña de la consulta',
+        mensaje: row.comentario,
+        requiereComentario: false,
+        requiereEncuesta: false
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        
+      }
+    });
+  }
 }

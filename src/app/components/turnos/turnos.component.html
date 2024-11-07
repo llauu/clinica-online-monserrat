@@ -44,6 +44,10 @@
                     <button mat-button *ngIf="row.estado === 'pendiente'" class="btn-accion shadow-sm me-2" (click)="cancelarTurno(row)">
                         Cancelar
                     </button>
+                    
+                    <button mat-button *ngIf="row.comentario" class="btn-accion shadow-sm me-2" (click)="verComentario(row)">
+                        {{row.estado === 'finalizado' ? 'Ver reseña' : 'Ver comentario'}}
+                    </button>
                 </td>
             </ng-container>
     
