@@ -61,13 +61,8 @@
                         Ver reseña
                     </button>
                     
-                    <!-- estado: finalizado y comentario: existe -->
-                    <button mat-button *ngIf="row.estado === 'finalizado' && row.comentario && this.rolUser === 'paciente'" class="btn-accion shadow-sm" (click)="completarEncuesta(row)">
-                        Completar encuesta
-                    </button>
-                    
-                    <!-- estado: finalizado y comentario: no existe -->
-                    <button mat-button *ngIf="row.estado === 'finalizado' && !row.comentario && this.rolUser === 'paciente'" class="btn-accion shadow-sm" (click)="calificarAtencion(row)">
+                    <!-- boton para apciente -->
+                    <button mat-button *ngIf="row.estado === 'finalizado' && this.rolUser === 'paciente' && !row.comentarioPaciente && !row.calificacion" class="btn-accion shadow-sm" (click)="calificarAtencion(row)">
                         Calificar atencion
                     </button>
                 </td>

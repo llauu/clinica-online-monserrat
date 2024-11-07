@@ -12,6 +12,7 @@ import { EstadoTurnoDirective } from '../../directives/estado-turno.directive';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogoComentarioComponent } from '../dialogo-comentario/dialogo-comentario.component';
 import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
 
 
 export interface TurnoData {
@@ -37,7 +38,8 @@ export interface TurnoData {
     MatButtonModule,
     NgIf,
     TimestampPipe,
-    EstadoTurnoDirective
+    EstadoTurnoDirective,
+    FormsModule
   ],
   templateUrl: './mis-turnos.component.html',
   styleUrl: './mis-turnos.component.css'
@@ -66,6 +68,8 @@ export class MisTurnosComponent {
           const turnos = data.map((doc: any) => ({
             id: doc.id,
             comentario: doc.comentario,
+            comentarioPaciente: doc.comentarioPaciente,
+            calificacion: doc.calificacion,
             paciente: doc.paciente,
             especialista: doc.especialista,
             especialidad: doc.especialidad,
@@ -84,6 +88,8 @@ export class MisTurnosComponent {
           const turnos = data.map((doc: any) => ({
             id: doc.id,
             comentario: doc.comentario,
+            comentarioPaciente: doc.comentarioPaciente,
+            calificacion: doc.calificacion,
             paciente: doc.paciente,
             especialista: doc.especialista,
             especialidad: doc.especialidad,
@@ -105,6 +111,7 @@ export class MisTurnosComponent {
         titulo: 'Reseña de la consulta',
         mensaje: row.comentario,
         requiereComentario: false,
+        requiereEncuesta: false
       },
     });
 
@@ -114,10 +121,6 @@ export class MisTurnosComponent {
       }
     });
   }
-
-  completarEncuesta(row: any) {
-  
-  }
   
   calificarAtencion(row: any) {
     const dialogRef = this.dialog.open(DialogoComentarioComponent, {
@@ -125,14 +128,17 @@ export class MisTurnosComponent {
         titulo: 'Calificar atencion',
         mensaje: 'Por favor, deje un comentario de como fue la atencion del especialista.',
         requiereComentario: true, 
+        requiereEncuesta: true
       },
     });
 
-    dialogRef.afterClosed().subscribe(comentario => {
-      if (comentario) {
+    dialogRef.afterClosed().subscribe(res => {
+      if (res) {
+        const { comentario, puntuacion } = res;
         row.comentario = comentario;
+        row.puntuacion = puntuacion;
 
-        this.firestoreService.updateDocument(`turnos/${row.id}`, {comentario: comentario});
+        this.firestoreService.updateDocument(`turnos/${row.id}`, {comentarioPaciente: comentario, calificacion: puntuacion});
       }
     });
   }
@@ -143,6 +149,7 @@ export class MisTurnosComponent {
         titulo: 'Aceptar turno',
         mensaje: '¿Esta seguro de que desea aceptar este turno?',
         requiereComentario: false,
+        requiereEncuesta: false
       },
     });
 
@@ -161,6 +168,7 @@ export class MisTurnosComponent {
         titulo: 'Cancelar turno',
         mensaje: 'Por favor, indique el motivo de la cancelacion del turno.',
         requiereComentario: true, 
+        requiereEncuesta: false
       },
     });
 
@@ -180,6 +188,7 @@ export class MisTurnosComponent {
         titulo: 'Rechazar turno',
         mensaje: 'Por favor, indique el motivo del rechazo del turno.',
         requiereComentario: true,
+        requiereEncuesta: false
       },
     });
 
@@ -200,6 +209,7 @@ export class MisTurnosComponent {
         titulo: 'Finalizar turno',
         mensaje: 'Por favor, ingrese la reseña y diagnostico de la consulta.',
         requiereComentario: true,
+        requiereEncuesta: false
       },
     });
 
