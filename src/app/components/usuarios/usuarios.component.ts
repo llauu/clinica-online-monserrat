@@ -1,90 +1,93 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { Component } from '@angular/core';
 import { FirestoreService } from '../../services/firestore.service';
-import { NgIf } from '@angular/common';
+import * as XLSX from 'xlsx';
+import { formatDate, NgFor, NgIf } from '@angular/common';
+import { Timestamp } from '@angular/fire/firestore';
+import { TimestampPipe } from '../../pipes/timestamp.pipe';
 import { Router } from '@angular/router';
 
-
 export interface UsuarioData {
+  id: string;
   nombre: string;
   apellido: string;
-  edad: string;
   dni: string;
+  edad: string;
   email: string;
   rol: string;
+  imagenUno: string;
+  habilitado?: boolean;
 }
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatTableModule, 
-    MatSortModule, 
-    MatPaginatorModule,
-    NgIf
-  ],
+    imports: [
+      NgIf,
+      NgFor,
+      TimestampPipe
+    ],
   templateUrl: './usuarios.component.html',
-  styleUrl: './usuarios.component.css'
+  styleUrls: ['./usuarios.component.css']
 })
 export class UsuariosComponent {
-  displayedColumns: string[] = ['nombre', 'apellido', 'edad', 'dni', 'email', 'rol'];
-  dataSource!: MatTableDataSource<UsuarioData>;
+  usuarios: UsuarioData[] = [];
 
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-
-  usuarioSeleccionado: any = null;
-  especialidadesEspecialista: string[] = [];
+  usuarioSeleccionado: UsuarioData | null = null;
+  turnosUsuarioSeleccionado: any[] = [];
 
   constructor(private firestoreService: FirestoreService, private router: Router) { }
 
   ngOnInit() {
-    this.firestoreService.getUsuarios()
-    .then((data) => {
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+    this.loadUsuarios();
   }
 
-
-
-  
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
+  loadUsuarios() {
+    this.firestoreService.getUsuarios() 
+      .then((data) => {
+        this.usuarios = data; 
+      });
   }
 
-  onClickUsuario(usuario: any) {
+  async onClickUsuario(usuario: UsuarioData) {
     this.usuarioSeleccionado = usuario;
-
-    if(this.usuarioSeleccionado.rol === 'especialista') {
-      if (typeof this.usuarioSeleccionado.especialidad === 'object') {
-        this.especialidadesEspecialista = Object.keys(this.usuarioSeleccionado.especialidad);
-      }
-      else {
-        console.error('Error al obtener las especialidades del usuario');
-      }
+    this.turnosUsuarioSeleccionado = await this.firestoreService.getTurnosPorPaciente(usuario.id); 
+    
+    if(this.usuarioSeleccionado.rol === 'paciente') {
+      this.downloadTurnos(); 
     }
   }
 
-  habilitarEspecialista() {
-    this.usuarioSeleccionado.habilitado = true;
-    this.firestoreService.habilitarEspecialista(this.usuarioSeleccionado.id);
-  }
 
+  habilitarEspecialista(especialista: UsuarioData) {
+    especialista.habilitado = true;
+    this.firestoreService.habilitarEspecialista(especialista.id);
+  }
 
   redirectToRegister(role: string) {
     this.router.navigate(['/registro-admin', role]);
+  }
+  
+  downloadTurnos(): void {
+    const turnos = this.turnosUsuarioSeleccionado.map(turno => ({
+      Especialidad: turno.especialidad,
+      Fecha: this.formatFecha(turno.fecha),
+      Hora: turno.hora,
+      Paciente: turno.paciente,
+      Especialista: turno.especialista,
+      Estado: turno.estado,
+      Comentario: turno.comentario,
+    }));
+
+    const worksheet = XLSX.utils.json_to_sheet(turnos);
+    const workbook: XLSX.WorkBook = { Sheets: { 'Turnos': worksheet }, SheetNames: ['Turnos'] };
+    XLSX.writeFile(workbook, `${this.usuarioSeleccionado?.nombre}_${this.usuarioSeleccionado?.apellido}_turnos.xlsx`);
+  }
+
+  formatFecha(value: Timestamp | null): string {
+    if (value instanceof Timestamp) {
+      const date = value.toDate(); 
+      return formatDate(date, 'd MMM. y', 'en-US'); 
+    }
+    return '';
   }
 }

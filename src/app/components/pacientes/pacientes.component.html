@@ -1,0 +1,28 @@
+<div class="pacientes-container">
+    <div class="pacientes-list p-3 mt-4">
+      <h2 class="title-h">Pacientes Atendidos</h2>
+      <div class="paciente-card" *ngFor="let paciente of dataSource.filteredData" (click)="onSelectPaciente(paciente)">
+        <img [src]="paciente.imagenUno || 'ruta/default-imagen.jpg'" alt="{{ paciente.nombre }}" class="paciente-imagen" />
+        <h3>{{ paciente.nombre }} {{ paciente.apellido }}</h3>
+      </div>
+    </div>
+    
+    <div class="paciente-detalles p-3 mt-4" *ngIf="pacienteSeleccionado">
+      <h2 class="title-h">Detalles de {{ pacienteSeleccionado.nombre }} {{ pacienteSeleccionado.apellido }}</h2>
+      
+      <div class="div-turnos-card">
+        <div *ngFor="let turno of turnosPaciente" [appEstadoTurno]="turno.estado" class="turno-card mx-3">
+            <p><strong>Especialidad:</strong> {{ turno.especialidad }} </p>
+            <p><strong>Fecha:</strong> {{ turno.fecha | timestamp }}</p>
+            <p><strong>Hora:</strong> {{ turno.hora }}hs </p>
+            <p><strong>Estado:</strong> {{ turno.estado }} </p>
+
+            <div class="row">
+                <button class="resena-button mx-2" (click)="verComentario(turno)">Ver Reseña</button>
+                <button class="resena-button mx-2" (click)="verHistoriaClinica(turno)">Ver Historia Clinica</button>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>
+  

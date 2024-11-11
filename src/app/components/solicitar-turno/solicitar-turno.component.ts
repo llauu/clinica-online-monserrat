@@ -1,17 +1,15 @@
-import {Component, inject} from '@angular/core';
-import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {Component} from '@angular/core';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatButtonModule} from '@angular/material/button';
 import { FirestoreService } from '../../services/firestore.service';
-import { MatOption, MatSelect } from '@angular/material/select';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { TimestampPipe } from '../../pipes/timestamp.pipe';
-import { timestamp } from 'rxjs';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-solicitar-turno',
@@ -23,12 +21,17 @@ import { timestamp } from 'rxjs';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
-    MatSelect,
-    MatOption,
     NgIf,
     NgFor,
-    CommonModule,
-    TimestampPipe
+    CommonModule
+  ],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateY(-90%)', opacity: 0 }),
+        animate('500ms ease-in', style({ transform: 'translateY(0)', opacity: 1 }))
+      ])
+    ])
   ],
   templateUrl: './solicitar-turno.component.html',
   styleUrl: './solicitar-turno.component.css'
@@ -50,6 +53,8 @@ export class SolicitarTurnoComponent {
 
   rolUsuarioIniciado: string = this.userService.getRol();
 
+  lastStep: boolean = false;
+
   constructor(private firestoreService: FirestoreService, private userService: UserService, private toastSrv: ToastrService, private router: Router) {}
 
   async ngOnInit() {
@@ -61,8 +66,8 @@ export class SolicitarTurnoComponent {
     this.generarDiasDisponibles(); 
   }
 
-  async traerEspecialistas() {
-    this.especialistasDisponibles = await this.firestoreService.getEspecialistas(this.especialidadSeleccionada);
+  async traerEspecialistas(especialidad: any) {
+    this.especialistasDisponibles = await this.firestoreService.getEspecialistas(especialidad.nombre);
   }
 
   atras() {
@@ -71,6 +76,8 @@ export class SolicitarTurnoComponent {
 
   async obtenerTurnosDisponibles() {
     const turnosDisponibles: { [dia: string]: string[] } = {};
+
+    this.lastStep = true;
   
     // Verificar si hay un especialista seleccionado
     if (!this.especialistaSeleccionado || !this.especialistaSeleccionado.especialidad) {

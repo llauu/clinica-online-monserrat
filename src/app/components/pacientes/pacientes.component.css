@@ -1,0 +1,103 @@
+.pacientes-container {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    padding: 40px;
+    padding-top: 120px;
+}
+
+.pacientes-list {
+    max-width: 330px;
+    height: 75vh;
+    overflow-y: auto;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #ccc;
+    align-items: center;
+}
+
+.paciente-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    width: 180px;
+    height: 170px;
+}
+
+.paciente-card:hover {
+    background-color: #f0f0f0;
+}
+
+.paciente-imagen {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+}
+
+.paciente-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.fav-button {
+    background-color: transparent;
+    border: none;
+    color: #f5c518;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.paciente-detalles {
+    flex: 2;
+    width: 70vw;
+}
+
+.div-turnos-card {
+    display: flex;
+}
+
+.paciente-detalles h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.turno-card {
+    background-color: #fafafa;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    width: 400px;
+}
+
+.resena-button {
+    background-color: #183058;
+    border: none;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: background-color 0.3s ease;
+    width: 45%;
+}
+
+.resena-button:hover {
+    background-color: #0056b3;
+}
+
+.title-h {
+    font-weight: 900;
+    font-size: 23px;
+    color: #183058;
+}

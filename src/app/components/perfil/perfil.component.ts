@@ -4,16 +4,28 @@ import { NgFor, NgIf } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FirestoreService } from '../../services/firestore.service';
 import { HorariosDirective } from '../../directives/horarios.directive';
+import { PdfService } from '../../services/pdf.service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
   imports: [NgIf, NgFor, FormsModule, HorariosDirective],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateY(-90%)', opacity: 0 }),
+        animate('500ms ease-in', style({ transform: 'translateY(0)', opacity: 1 }))
+      ])
+    ])
+  ],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
 export class PerfilComponent {
   user: any;
+
+  // Especialista att
   especialidadesEspecialista: string[] = [];
   selectedSpecialty: string | null = null;
   weekDays = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado'];
@@ -21,18 +33,34 @@ export class PerfilComponent {
   messageError: string = '';
   horariosActualizados: boolean = false;
 
-  constructor(private userService: UserService, private firestoreService: FirestoreService) { }
+  // Paciente att
+  turnos: any[] = [];
+  logoUrl = 'assets/icon_mon.png';
+  especialistaSeleccionado: string = 'Todos';
+  especialistasPaciente: { id: string, nombre: string }[] = [];
+
+  constructor(private userService: UserService, private firestoreService: FirestoreService, private pdfService: PdfService) { }
 
   ngOnInit(): void {
     this.userService.getUserProfile()
       .then((res) => {
         this.user = res;
 
-        if (this.user && typeof this.user.especialidad === 'object') {
-          this.especialidadesEspecialista = Object.keys(this.user.especialidad);
+        if(this.user.rol === 'especialista') {
+          if (this.user && typeof this.user.especialidad === 'object') {
+            this.especialidadesEspecialista = Object.keys(this.user.especialidad);
+          }
+          else {
+            console.error('Error al obtener las especialidades del usuario');
+          }
         }
-        else {
-          console.error('Error al obtener las especialidades del usuario');
+        else if(this.user.rol === 'paciente') {
+          this.firestoreService.getTurnosFinalizadosPorPaciente(this.user.id)
+            .then((turnos) => {
+              this.turnos = turnos;
+              this.turnos.sort((a, b) => a.fecha.seconds - b.fecha.seconds);
+              this.cargarEspecialistasUnicos();
+            });
         }
       });
 
@@ -40,6 +68,29 @@ export class PerfilComponent {
       this.schedule[day] = { start: '', end: '' };
     });
 
+  }
+
+
+  cargarEspecialistasUnicos() {
+    const especialistasMap = new Map();
+    this.turnos.forEach(turno => {
+      const id = turno.idEspecialista;
+      const nombre = turno.especialista;
+
+      if (!especialistasMap.has(id)) {
+        especialistasMap.set(id, nombre);
+      }
+    });
+
+    this.especialistasPaciente = Array.from(especialistasMap, ([id, nombre]) => ({ id, nombre }));
+  }
+
+  descargarHistoriaClinica() {
+    const turnosFiltrados = this.especialistaSeleccionado === 'Todos'
+      ? this.turnos
+      : this.turnos.filter(turno => turno.idEspecialista === this.especialistaSeleccionado);
+
+    this.pdfService.generarHistoriaClinicaPDF(this.user, turnosFiltrados, this.logoUrl);
   }
 
   onSpecialtyChange() {

@@ -13,11 +13,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogoComentarioComponent } from '../dialogo-comentario/dialogo-comentario.component';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
+import { DialogoHistoriaClinicaComponent } from '../dialogo-historia-clinica/dialogo-historia-clinica.component';
 
 
 export interface TurnoData {
   id: string;
   comentario: string;
+  comentarioPaciente: string;
+  calificacion: number;
+  historiaClinica: any;
   paciente: string;
   especialista: string;
   especialidad: string;
@@ -62,46 +66,96 @@ export class MisTurnosComponent {
   }
 
   ngOnInit() {
+    this.dataSource = new MatTableDataSource<TurnoData>();
+
     if(this.rolUser === 'especialista') {
-      this.firestoreService.getTurnosPorEspecialista(this.idUser)
-        .then((data: any) => {
-          const turnos = data.map((doc: any) => ({
-            id: doc.id,
-            comentario: doc.comentario,
-            comentarioPaciente: doc.comentarioPaciente,
-            calificacion: doc.calificacion,
-            paciente: doc.paciente,
-            especialista: doc.especialista,
-            especialidad: doc.especialidad,
-            fecha: doc.fecha,
-            hora: doc.hora,
-            estado: doc.estado
-          } as TurnoData));
-          this.dataSource = new MatTableDataSource<TurnoData>(turnos);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        });
+      this.firestoreService.getTurnosPorEspecialista(this.idUser).then((data: any) => {
+        const turnos = data.map((doc: any) => ({
+          id: doc.id,
+          comentario: doc.comentario,
+          comentarioPaciente: doc.comentarioPaciente,
+          calificacion: doc.calificacion,
+          historiaClinica: doc.historiaClinica,
+          paciente: doc.paciente,
+          especialista: doc.especialista,
+          especialidad: doc.especialidad,
+          fecha: doc.fecha,
+          hora: doc.hora,
+          estado: doc.estado
+        } as TurnoData));
+
+        this.dataSource.data = turnos;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        
+        // Configuración de filtro personalizado
+        this.dataSource.filterPredicate = (data: TurnoData, filter: string) => {
+          const dataStr = JSON.stringify(data).toLowerCase();
+          return dataStr.includes(filter.trim().toLowerCase());
+        };
+      });
+    } else {
+      this.firestoreService.getTurnosPorPaciente(this.idUser).then((data: any) => {
+        const turnos = data.map((doc: any) => ({
+          id: doc.id,
+          comentario: doc.comentario,
+          comentarioPaciente: doc.comentarioPaciente,
+          calificacion: doc.calificacion,
+          historiaClinica: doc.historiaClinica,
+          paciente: doc.paciente,
+          especialista: doc.especialista,
+          especialidad: doc.especialidad,
+          fecha: doc.fecha,
+          hora: doc.hora,
+          estado: doc.estado
+        } as TurnoData));
+
+        this.dataSource.data = turnos;
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+        // Configuración de filtro personalizado
+        this.dataSource.filterPredicate = (data: TurnoData, filter: string) => {
+          const dataStr = JSON.stringify(data).toLowerCase();
+          return dataStr.includes(filter.trim().toLowerCase());
+        };
+      });
     }
-    else {
-      this.firestoreService.getTurnosPorPaciente(this.idUser)
-        .then((data: any) => {
-          const turnos = data.map((doc: any) => ({
-            id: doc.id,
-            comentario: doc.comentario,
-            comentarioPaciente: doc.comentarioPaciente,
-            calificacion: doc.calificacion,
-            paciente: doc.paciente,
-            especialista: doc.especialista,
-            especialidad: doc.especialidad,
-            fecha: doc.fecha,
-            hora: doc.hora,
-            estado: doc.estado
-          } as TurnoData));
-          this.dataSource = new MatTableDataSource<TurnoData>(turnos);
-          this.dataSource.paginator = this.paginator;
-          this.dataSource.sort = this.sort;
-        });
-    }
+  }
+
+
+  verHistoriaClinica(row: any) {
+    const dialogRef = this.dialog.open(DialogoHistoriaClinicaComponent, {
+      data: {
+        titulo: 'Historia Clinica',
+        mensaje: 'Detalles de la historia clinica del paciente.',
+        historiaClinica: row.historiaClinica,
+        editable: false
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(historiaClinica => {
+      if (historiaClinica) {
+        // this.firestoreService.updateDocument(`turnos/${row.id}`, { historiaClinica });
+      }
+    });
+  }
+
+  cargarHistoriaClinica(row: any) {
+    const dialogRef = this.dialog.open(DialogoHistoriaClinicaComponent, {
+      data: {
+        titulo: 'Historia Clinica',
+        mensaje: 'Por favor, ingrese los detalles de la historia clinica del paciente.',
+        editable: true
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(historiaClinica => {
+      if (historiaClinica) {
+        row.historiaClinica = historiaClinica;
+        this.firestoreService.updateDocument(`turnos/${row.id}`, { historiaClinica });
+      }
+    });
   }
 
 
@@ -132,11 +186,11 @@ export class MisTurnosComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe(res => {
-      if (res) {
-        const { comentario, puntuacion } = res;
-        row.comentario = comentario;
-        row.puntuacion = puntuacion;
+    dialogRef.afterClosed().subscribe(data => {
+      if (data) {
+        const { comentario, puntuacion } = data;
+        row.comentarioPaciente = comentario;
+        row.calificacion = puntuacion;
 
         this.firestoreService.updateDocument(`turnos/${row.id}`, {comentarioPaciente: comentario, calificacion: puntuacion});
       }
@@ -172,12 +226,12 @@ export class MisTurnosComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe(comentario => {
-      if (comentario) {
+    dialogRef.afterClosed().subscribe(data => {
+      if (data) {
         row.estado = 'cancelado';
-        row.comentario = comentario;
+        row.comentario = data.comentario;
 
-        this.firestoreService.updateDocument(`turnos/${row.id}`, {estado: 'cancelado', comentario: comentario});
+        this.firestoreService.updateDocument(`turnos/${row.id}`, {estado: 'cancelado', comentario: data.comentario});
       }
     });
   }
@@ -192,13 +246,13 @@ export class MisTurnosComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe(comentario => {
-      if (comentario) {
+    dialogRef.afterClosed().subscribe(data => {
+      if (data) {
         console.log(row);
         row.estado = 'rechazado';
-        row.comentario = comentario;
+        row.comentario = data.comentario;
 
-        this.firestoreService.updateDocument(`turnos/${row.id}`, {estado: 'rechazado', comentario: comentario});
+        this.firestoreService.updateDocument(`turnos/${row.id}`, {estado: 'rechazado', comentario: data.comentario});
       }
     });
   }
@@ -213,12 +267,12 @@ export class MisTurnosComponent {
       },
     });
 
-    dialogRef.afterClosed().subscribe(comentario => {
-      if (comentario) {
+    dialogRef.afterClosed().subscribe(data => {
+      if (data) {
         row.estado = 'finalizado';
-        row.reseña = comentario;
+        row.comentario = data.comentario;
         
-        this.firestoreService.updateDocument(`turnos/${row.id}`, {estado: 'finalizado', comentario: comentario});
+        this.firestoreService.updateDocument(`turnos/${row.id}`, {estado: 'finalizado', comentario: data.comentario});
       }
     });
   }
@@ -227,9 +281,5 @@ export class MisTurnosComponent {
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-
-    if (this.dataSource.paginator) {
-      this.dataSource.paginator.firstPage();
-    }
   }
 }

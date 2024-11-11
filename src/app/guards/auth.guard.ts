@@ -13,7 +13,7 @@ export const authGuard: CanActivateFn = (route, state) => {
         resolve(true)
       }
       else { 
-        router.navigate(['/login']);
+        router.navigate(['/home']);
         toastrSvc.error('No estas autenticado para acceder a esta seccion.', 'Permisos insuficientes');
         resolve(false)
       }

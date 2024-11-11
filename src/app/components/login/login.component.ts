@@ -14,13 +14,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-import { Firestore, collectionData } from '@angular/fire/firestore';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { FormsModule } from '@angular/forms';
-import { collection, query, where } from 'firebase/firestore';
 import { FirestoreService } from '../../services/firestore.service';
 import { ToastrService } from 'ngx-toastr';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-login',
@@ -40,10 +39,17 @@ import { ToastrService } from 'ngx-toastr';
     FormsModule, 
     MatMenuModule, 
     MatIconModule, 
-    RouterLink,
     MatDividerModule,
     MatSelectModule,
     MatRadioModule
+  ],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateY(-90%)', opacity: 0 }),
+        animate('500ms ease-in', style({ transform: 'translateY(0)', opacity: 1 }))
+      ])
+    ])
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'

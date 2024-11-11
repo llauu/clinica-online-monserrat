@@ -1,5 +1,5 @@
 
-<div class="container">
+<div class="container" [@slideInOut]>
     <div class="row justify-content-center">
         <div class="col-md-12 reg-container card-top">
           <div class="card mt-5">
@@ -13,7 +13,7 @@
                         <div class="div-cosas-turno">
                             <mat-label class="title-step">Paciente</mat-label>
                             <ul class="container col-12 row mt-4">
-                                    <button mat-button [value]="paciente" *ngFor="let paciente of pacientesDisponibles" (click)="pacienteSeleccionado = paciente" class="btn-especialista" [ngClass]="{'boton-seleccionado': pacienteSeleccionado === paciente}"
+                                    <button matStepperNext mat-button [value]="paciente" *ngFor="let paciente of pacientesDisponibles" (click)="pacienteSeleccionado = paciente" class="btn-especialista" [ngClass]="{'boton-seleccionado': pacienteSeleccionado === paciente}"
                                     >
                                         <p>{{paciente.apellido + ", " + paciente.nombre}}</p>
                                         <img src="{{paciente.imagenUno}}" width="100px">
@@ -22,7 +22,7 @@
                         </div>
 
                         <div class="btns-stepper position-absolute bottom-0 end-0 mb-4">
-                            <button mat-button matStepperNext [disabled]="!pacienteSeleccionado">Siguiente</button>
+                            <!-- <button mat-button matStepperNext [disabled]="!pacienteSeleccionado">Siguiente</button> -->
                         </div>
                     </mat-step>
 
@@ -32,15 +32,15 @@
                         <div class="div-cosas-turno">
                             <mat-label class="title-step">Especialidad</mat-label>
                             <ul class="container col-12 row mt-4">
-                                <button mat-button [value]="especialidad" *ngFor="let especialidad of especialidadesDisponibles" (click)="especialidadSeleccionada = especialidad.nombre" class="col-2 btn-especialidad" [ngClass]="{'boton-seleccionado': especialidadSeleccionada === especialidad.nombre}">
-                                    <img title="{{especialidad.nombre}}" src="{{especialidad.imagen}}" width="75px" alt="">
+                                <button mat-button matStepperNext [value]="especialidad" *ngFor="let especialidad of especialidadesDisponibles" (click)="especialidadSeleccionada = especialidad.nombre" class="col-2 btn-especialidad" [ngClass]="{'boton-seleccionado': especialidadSeleccionada === especialidad.nombre}">
+                                    <img title="{{especialidad.nombre}}" (click)="traerEspecialistas(especialidad)" src="{{especialidad.imagen}}" width="75px" alt="">
                                 </button>
                             </ul>
                         </div>
                     
                         <div class="btns-stepper position-absolute bottom-0 end-0 mb-4">
                             <button mat-button matStepperPrevious *ngIf="this.rolUsuarioIniciado == 'admin'" >Atras</button>
-                            <button mat-button matStepperNext (click)="traerEspecialistas()" [disabled]="!especialidadSeleccionada">Siguiente</button>
+                            <!-- <button mat-button matStepperNext (click)="traerEspecialistas()" [disabled]="!especialidadSeleccionada">Siguiente</button> -->
                         </div>
                     </mat-step>
 
@@ -49,7 +49,7 @@
                         <div class="div-cosas-turno">
                             <mat-label class="title-step">Especialista</mat-label>
                             <ul class="container col-12 row mt-4">
-                                    <button mat-button [value]="especialista" *ngFor="let especialista of especialistasDisponibles" (click)="especialistaSeleccionado = especialista" class="btn-especialista" [ngClass]="{'boton-seleccionado': especialistaSeleccionado === especialista}"
+                                    <button mat-button matStepperNext [value]="especialista" *ngFor="let especialista of especialistasDisponibles" (click)="especialistaSeleccionado = especialista" (click)="obtenerTurnosDisponibles()" class="btn-especialista" [ngClass]="{'boton-seleccionado': especialistaSeleccionado === especialista}"
                                     >
                                         <p>{{especialista.apellido + ", " + especialista.nombre}}</p>
                                         <img src="{{especialista.imagenUno}}" width="100px">
@@ -59,7 +59,7 @@
 
                         <div class="btns-stepper position-absolute bottom-0 end-0 mb-4">
                             <button mat-button matStepperPrevious (click)="atras()">Atras</button>
-                            <button mat-button matStepperNext [disabled]="!especialistaSeleccionado" (click)="obtenerTurnosDisponibles()">Siguiente</button>
+                            <!-- <button mat-button matStepperNext [disabled]="!especialistaSeleccionado" (click)="obtenerTurnosDisponibles()">Siguiente</button> -->
                         </div>
                     </mat-step>
 
@@ -83,8 +83,8 @@
                         </div>
 
                         <div class="btns-stepper position-absolute bottom-0 end-0 mb-4">
-                            <button mat-button matStepperPrevious>Atras</button>
-                            <button mat-button (click)="solicitarTurno()" [disabled]="!turnoSeleccionado">Solicitar</button>
+                            <button mat-button matStepperPrevious *ngIf="lastStep">Atras</button>
+                            <button mat-button (click)="solicitarTurno()" [disabled]="!turnoSeleccionado" *ngIf="lastStep">Solicitar</button>
                         </div>
                     </mat-step>
                   </mat-stepper>

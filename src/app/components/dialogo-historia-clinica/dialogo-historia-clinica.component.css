@@ -1,0 +1,25 @@
+.dialog-h {
+    font-weight: 900;
+    font-size: 23px;
+    color: #183058;
+}
+
+.p-dialog {
+    font-size: 17px;
+    color: #000000;
+    font-weight: 500;
+}
+
+.text-area-dialog :focus {
+    border: none !important;
+    box-shadow: none;
+}
+
+.div-dialog {
+    width: 700px;
+    min-height: 600px;
+}
+
+.p-agregar {
+    text-decoration: underline;
+}

@@ -1,132 +1,62 @@
-
-<div class="table-usuarios mx-5">
-    <div class="w-100">
-
-        <mat-form-field class="search-field">
-            <mat-label>Buscar</mat-label>
-            <input matInput (keyup)="applyFilter($event)" placeholder="Buscar..." #input>
-        </mat-form-field>
-    </div>
-    <div class="mat-elevation-z8 shadow-none">
-        <table mat-table [dataSource]="dataSource" matSort>
-            <ng-container matColumnDef="nombre">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p" id="izq"> <b class="izq">Nombre</b>  </th>
-                <td mat-cell *matCellDef="let row" class="fila-usuario" (click)="onClickUsuario(row)"> {{row.nombre}} </td>
-            </ng-container>
-    
-            <ng-container matColumnDef="apellido">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p"> <b>Apellido</b> </th>
-                <td mat-cell *matCellDef="let row" class="fila-usuario" (click)="onClickUsuario(row)"> {{row.apellido}} </td>
-            </ng-container>
-    
-            <ng-container matColumnDef="edad">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p"> <b>Edad</b> </th>
-                <td mat-cell *matCellDef="let row" class="fila-usuario" (click)="onClickUsuario(row)"> {{row.edad}} </td>
-            </ng-container>
-    
-            <ng-container matColumnDef="dni">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p"> <b>DNI</b> </th>
-                <td mat-cell *matCellDef="let row" class="fila-usuario" (click)="onClickUsuario(row)"> {{row.dni}} </td>
-            </ng-container>
-    
-            <ng-container matColumnDef="email">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p"> <b>Correo</b> </th>
-                <td mat-cell *matCellDef="let row" class="fila-usuario" (click)="onClickUsuario(row)"> {{row.email}} </td>
-            </ng-container>
-            
-            <ng-container matColumnDef="rol">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p der" id="der"> <b>Perfil</b> </th>
-                <td mat-cell *matCellDef="let row" class="fila-usuario" (click)="onClickUsuario(row)"> {{row.rol}} </td>
-            </ng-container>
-    
-    
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    
-            
-            <tr class="mat-row" *matNoDataRow class="fail-search">
-            <td class="mat-cell ps-4 pt-4" colspan="4">No se encontraron resultados.</td>
-            </tr>
-        </table>
-        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" class="div-paginator" aria-label="Selecciona"></mat-paginator>
+<div class="usuarios-container">
+    <div class="usuario-list">
+      <div *ngFor="let usuario of usuarios" class="usuario-item">
+        <button mat-icon-button class="usuario-btn" (click)="onClickUsuario(usuario)">
+          <img [src]="usuario.imagenUno" class="usuario-img" alt="Imagen del usuario">
+          <span class="usuario-name">{{ usuario.nombre }} {{ usuario.apellido }}</span>
+        </button>
+      </div>
     </div>
 
-    <div class="d-flex justify-content-between">
-        <div class="div-detalle p-5">
-            @if(usuarioSeleccionado == null) {
-                <h3 class="txt-alta-usuario text-center">Selecciona un usuario para ver su detalle.</h3>
-            }
-            @else {
-                <div class="div-detalle-usuario">
-                    <div class="div-imgs mb-5">
-                        <img src="{{usuarioSeleccionado.imagenUno}}" class="img-usuario m-auto" alt="Imagen uno">
-                        <img src="{{usuarioSeleccionado.imagenDos}}" class="img-usuario" alt="Imagen dos" *ngIf="usuarioSeleccionado.rol === 'paciente'">
-                    </div>
-                    <div class="div-datos-usuario">
-                        <b>Nombre</b>
-                        <p>{{usuarioSeleccionado.nombre}}</p>
-                        
-                        <b>Apellido</b>
-                        <p>{{usuarioSeleccionado.apellido}}</p>
-                        
-                        <b>Edad</b>
-                        <p>{{usuarioSeleccionado.edad}}</p>
-                        
-                        <b>DNI</b>
-                        <p>{{usuarioSeleccionado.dni}}</p>
-                        
-                        <b>Correo</b>
-                        <p>{{usuarioSeleccionado.email}}</p>
-
-                        <b>Perfil</b>
-                        <p>{{usuarioSeleccionado.rol}}</p>
-    
-                        @switch (usuarioSeleccionado.rol) {
-                            @case ('paciente') {
-                                <b>Obra social</b>
-                                <p>{{usuarioSeleccionado.obraSocial}}</p>
-                            }
-                            @case ('especialista') {
-                                <b>Especialidad</b>
-                                <p>
-                                    @for (especialidad of especialidadesEspecialista; track $index) {
-                                        {{especialidad}} - 
-                                    }
-                                </p>
-
-                                <div class="d-flex flex-column">
-                                    <b>Habilitado</b> 
-                                    @if (usuarioSeleccionado.habilitado) {
-                                        <img src="assets/check.png" width="25" height="25" alt="Si">
-                                    } @else {
-                                        <div>
-                                            <img src="assets/uncheck.png" width="25" height="25" alt="No">
-                                            <a class="ms-2 a-habilitar" (click)="habilitarEspecialista()">Habilitar</a>
-                                        </div>
-                                    }
-                                </div>
-                            }
-                        }
-                    </div>
-                </div>
-            }
-        </div>
-        <div class="div-alta-usuario">
-            <h3 class="txt-alta-usuario">Registrar usuario nuevo</h3>
+    <div class="d-flex">
+        <div class="usuario-detail shadow mx-4">
+            <h3 class="title-h">Registrar usuario nuevo</h3>
             <div class="div-imgs">
-                <button class="btn btn-primary col-4 mx-3" class="btn-sel mx-4" (click)="redirectToRegister('paciente')">
-                    <img src="assets/paciente.jpg" class="img-btn-sel" alt="Paciente">
-                </button>
-                <button class="btn btn-primary col-4 mx-3" class="btn-sel mx-4" (click)="redirectToRegister('especialista')">
-                    <img src="assets/doctor.jpg" class="img-btn-sel" alt="Especialista">
-                </button>
-                <button class="btn btn-primary col-4 mx-3" class="btn-sel mx-4" (click)="redirectToRegister('admin')">
+                <button class=" btn-sel mx-3 mt-3" (click)="redirectToRegister('admin')">
                     <img src="assets/admin.png" class="img-btn-sel" alt="Admin">
                 </button>
             </div>
+            <div class="div-imgs">
+                <button class=" btn-sel mx-3 mt-3" (click)="redirectToRegister('paciente')">
+                    <img src="assets/paciente.jpg" class="img-btn-sel" alt="Paciente">
+                </button>
+                <button class=" btn-sel mx-3 mt-3" (click)="redirectToRegister('especialista')">
+                    <img src="assets/doctor.jpg" class="img-btn-sel" alt="Especialista">
+                </button>
+            </div>
+        </div>
+    
+        <div *ngIf="usuarioSeleccionado" class="usuario-detail shadow mx-4">
+          <h3 class="title-h">Detalles del Usuario</h3>
+          <p><strong>Nombre:</strong> {{ usuarioSeleccionado.nombre }}</p>
+          <p><strong>Apellido:</strong> {{ usuarioSeleccionado.apellido }}</p>
+          <p><strong>DNI:</strong> {{ usuarioSeleccionado.dni }}</p>
+          <p><strong>Edad:</strong> {{ usuarioSeleccionado.edad }}</p>
+          <p><strong>E-mail:</strong> {{ usuarioSeleccionado.email }}</p>
+          <p><strong>Perfil:</strong> {{ usuarioSeleccionado.rol }}</p>
+            
+          <div *ngIf="usuarioSeleccionado.rol === 'especialista'" class="d-flex">
+            <p><strong>Habilitado:</strong></p>
+            @if (usuarioSeleccionado.habilitado) {
+                <img src="assets/check.png" width="25" height="25" alt="Si">
+            } @else {
+                <div>
+                    <img src="assets/uncheck.png" width="25" height="25" alt="No">
+                    <a class="ms-2 a-habilitar" (click)="habilitarEspecialista(usuarioSeleccionado)">Habilitar</a>
+                </div>
+            }
+          </div>
+    
+          
+          <div *ngIf="turnosUsuarioSeleccionado.length > 0" class="mt-3">
+            <h3 class="title-h">Turnos:</h3>
+            <ul>
+              <li *ngFor="let turno of turnosUsuarioSeleccionado">
+                <p>{{ turno.especialidad }} - {{ turno.especialista }} - {{ turno.fecha | timestamp }}, {{ turno.hora }}hs</p>
+              </li>
+            </ul>
+          </div>
         </div>
     </div>
-
 </div>
-
-
+  

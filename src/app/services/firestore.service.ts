@@ -3,7 +3,18 @@ import { DocumentSnapshot, Firestore, QuerySnapshot, and, average, collection,
   collectionData, collectionGroup, deleteDoc, doc, docData, getAggregateFromServer, 
   getCountFromServer, getDoc, getDocs, limit, or, orderBy, query, serverTimestamp, 
   setDoc, startAfter, sum, updateDoc, where, Query} from '@angular/fire/firestore';
-import { WhereFilterOp } from "firebase/firestore";
+import { Timestamp, WhereFilterOp } from "firebase/firestore";
+
+
+export interface TurnoData {
+  fecha: Timestamp;
+  hora: string;
+  comentario: string;
+  especialidad: string;
+  especialista: string;
+  estado: string;
+  historiaClinica: any;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -146,6 +157,16 @@ export class FirestoreService {
     const snapshot = await getDocs(turnosQuery);
     return snapshot.docs.map(doc => doc.data());
   }
+  async getTurnosFinalizadosPorPaciente(idPaciente: string) {
+    const turnosCollectionRef = collection(this.firestore, 'turnos');
+    const turnosQuery = query(
+      turnosCollectionRef,
+      where('idPaciente', '==', idPaciente),
+      where('estado', '==', 'finalizado')
+    );
+    const snapshot = await getDocs(turnosQuery);
+    return snapshot.docs.map(doc => doc.data());
+  }
   
   async getTurnosPorEspecialista(idEspecialista: string) {
     const turnosCollectionRef = collection(this.firestore, 'turnos');
@@ -167,6 +188,60 @@ export class FirestoreService {
     return snapshot.docs.map(doc => doc.data());
   }
 
+
+  async obtenerPacientesAtendidosPorEspecialista(idEspecialista: string): Promise<any[]> {
+    const pacientesAtendidos: any[] = [];
+
+    try {
+      // Primero, obtenemos los turnos "completados" del especialista
+      const turnosRef = collection(this.firestore, 'turnos');
+      const turnosQuery = query(
+        turnosRef,
+        where('idEspecialista', '==', idEspecialista),
+        where('estado', '==', 'finalizado')
+      );
+
+      const turnosSnapshot = await getDocs(turnosQuery);
+
+      // Creamos un conjunto de IDs únicos de pacientes atendidos
+      const pacienteIds = new Set<string>();
+      turnosSnapshot.forEach(turnoDoc => {
+        const turnoData = turnoDoc.data();
+        if (turnoData['idPaciente']) {
+          pacienteIds.add(turnoData['idPaciente']);
+        }
+      });
+
+      // Ahora obtenemos los detalles de cada paciente con rol "paciente"
+      const usuariosRef = collection(this.firestore, 'usuarios');
+      for (let pacienteId of pacienteIds) {
+        const pacienteDocRef = doc(usuariosRef, pacienteId);
+        const pacienteDoc = await getDoc(pacienteDocRef);
+        const pacienteData = pacienteDoc.data();
+
+        // Filtramos para asegurarnos de que el rol sea "paciente"
+        if (pacienteData && pacienteData['rol'] === 'paciente') {
+          pacientesAtendidos.push({ id: pacienteDoc.id, ...pacienteData });
+        }
+      }
+    } catch (error) {
+      console.error('Error obteniendo pacientes atendidos:', error);
+    }
+
+    return pacientesAtendidos;
+  }
+
+
+  async obtenerTurnosPorPacienteYEspecialista(idPaciente: string, idEspecialista: string): Promise<TurnoData[]> {
+    const turnosRef = collection(this.firestore, 'turnos');
+    const q = query(turnosRef, where('idPaciente', '==', idPaciente), where('idEspecialista', '==', idEspecialista));
+    const querySnapshot: QuerySnapshot = await getDocs(q);
+    
+    // Mapea los turnos a TurnoData
+    return querySnapshot.docs.map(doc => doc.data() as TurnoData);
+  }
+
+  
   validateEspecialista(email: string) {
     return new Promise((resolve, reject) => {
       let col = collection(this.firestore, 'usuarios');

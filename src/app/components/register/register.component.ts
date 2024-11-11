@@ -10,11 +10,20 @@ import { ToastrService } from 'ngx-toastr';
 import { NgxCaptchaModule } from 'ngx-captcha';
 import { FirestoreService } from '../../services/firestore.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-register',
   standalone: true,
   imports: [ReactiveFormsModule, NgIf, NgxCaptchaModule, NgFor, MatProgressSpinnerModule],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({ transform: 'translateY(-90%)', opacity: 0 }),
+        animate('500ms ease-in', style({ transform: 'translateY(0)', opacity: 1 }))
+      ])
+    ])
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -221,15 +230,22 @@ export class RegisterComponent {
 
   agregarEspecialidad() {
     const inputEl = document.getElementById('nuevaEspecialidad') as HTMLInputElement;
-    
-    if(inputEl.value != '' && this.verificarEspecialidad(inputEl.value)) {
+
+    if (inputEl.value !== '' && this.verificarEspecialidad(inputEl.value)) {
       this.errorMsjEspecialidad = '';
-      this.firestoreService.createDocument('especialidades', {nombre: inputEl.value, imagen: 'https://images.vexels.com/content/151981/preview/stethoscope-icon-medical-icons-f7267f.png'});
+  
+      this.firestoreService.createDocument('especialidades', { nombre: inputEl.value, imagen: 'https://images.vexels.com/content/151981/preview/stethoscope-icon-medical-icons-f7267f.png' });
+  
       this.especialidadesDisponibles.push(inputEl.value);
+  
+      const especialidadesArray = this.form.get('especialidades') as FormArray;
+      especialidadesArray.push(new FormControl(inputEl.value));
   
       this.form.patchValue({
         especialidad: inputEl.value
       });
+  
+      inputEl.value = '';
     }
   }
 

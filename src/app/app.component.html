@@ -31,6 +31,10 @@
         <li class="nav-item mx-3" *ngIf="rol === 'admin' || rol === 'paciente'">
           <button class="nav-link" routerLink="solicitar-turno" routerLinkActive="ruta-activa">Solicitar turno</button>
         </li>
+        <li class="nav-item mx-3" *ngIf="rol === 'especialista'">
+          <button class="nav-link" routerLink="pacientes" routerLinkActive="ruta-activa">Pacientes</button>
+        </li>
+
         <li class="nav-item dropdown mx-3 d-flex" *ngIf="isLogged">
           <button  class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <b>{{ userData ? userData.nombre + ' ' + userData.apellido : '' }}</b> </button>
           
@@ -49,12 +53,8 @@
             <a class="dropdown-item a-custom" (click)="logout()"><b class="logout-text">Cerrar sesion</b></a> 
           </div>
         </li>
-  
-  
       </ul>
     </div>
-  </nav>
-  
-  
-  <router-outlet/>
-  
+</nav>
+
+<router-outlet/>

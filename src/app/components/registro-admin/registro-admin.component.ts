@@ -251,22 +251,17 @@ export class RegistroAdminComponent {
     if (inputEl.value !== '' && this.verificarEspecialidad(inputEl.value)) {
       this.errorMsjEspecialidad = '';
   
-      // Agregar la especialidad a Firestore
-      this.firestoreService.createDocument('especialidades', { nombre: inputEl.value });
+      this.firestoreService.createDocument('especialidades', { nombre: inputEl.value, imagen: 'https://images.vexels.com/content/151981/preview/stethoscope-icon-medical-icons-f7267f.png' });
   
-      // Agregar la especialidad a la lista de especialidades disponibles
       this.especialidadesDisponibles.push(inputEl.value);
   
-      // Agregar el nuevo control al formulario
       const especialidadesArray = this.form.get('especialidades') as FormArray;
       especialidadesArray.push(new FormControl(inputEl.value));
   
-      // Actualizar el valor del control `especialidad`
       this.form.patchValue({
         especialidad: inputEl.value
       });
   
-      // Limpiar el campo de entrada
       inputEl.value = '';
     }
   }

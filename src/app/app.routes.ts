@@ -31,4 +31,8 @@ export const routes: Routes = [
         path: 'turnos', loadComponent: () => import('./components/turnos/turnos.component').then(m => m.TurnosComponent),
         canActivate:[adminGuard] 
     },
+    { 
+        path: 'pacientes', loadComponent: () => import('./components/pacientes/pacientes.component').then(m => m.PacientesComponent),
+        canActivate:[authGuard] 
+    },
 ];

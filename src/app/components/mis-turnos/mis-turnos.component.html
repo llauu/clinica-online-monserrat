@@ -7,7 +7,7 @@
         </mat-form-field>
     </div>
     <div class="mat-elevation-z8 shadow-none">
-        <table mat-table [dataSource]="dataSource" matSort matSortActive="fecha" matSortDirection="asc">
+        <table mat-table [dataSource]="dataSource" matSort matSortActive="fecha" matSortDirection="desc">
             <ng-container matColumnDef="paciente">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p" id="izq"> <b class="izq">Paciente</b>  </th>
                 <td mat-cell *matCellDef="let row" class="fila-turno" [appEstadoTurno]="row.estado"> {{row.paciente}} </td>
@@ -41,29 +41,37 @@
             <ng-container matColumnDef="acciones">
                 <th mat-header-cell *matHeaderCellDef class="th-p der" id="der"> <b>Acciones</b> </th>
                 <td mat-cell *matCellDef="let row" class="fila-turno" [appEstadoTurno]="row.estado">
-                    <button mat-button *ngIf="row.estado === 'aceptado'" class="btn-accion shadow-sm me-2" (click)="cancelarTurno(row)">
+                    <button mat-button *ngIf="row.estado === 'aceptado'" class="btn-accion shadow-sm me-3" (click)="cancelarTurno(row)">
                         Cancelar
                     </button>
                     
-                    <button mat-button *ngIf="row.estado === 'pendiente' && this.rolUser === 'especialista'" class="btn-accion shadow-sm me-2" (click)="rechazarTurno(row)">
+                    <button mat-button *ngIf="row.estado === 'pendiente' && this.rolUser === 'especialista'" class="btn-accion shadow-sm me-3" (click)="rechazarTurno(row)">
                         Rechazar
                     </button>
                     
-                    <button mat-button *ngIf="row.estado === 'pendiente' && this.rolUser === 'especialista'" class="btn-accion shadow-sm mx-2" (click)="aceptarTurno(row)">
+                    <button mat-button *ngIf="row.estado === 'pendiente' && this.rolUser === 'especialista'" class="btn-accion shadow-sm me-3" (click)="aceptarTurno(row)">
                         Aceptar
                     </button>
                     
-                    <button mat-button *ngIf="row.estado === 'aceptado' && this.rolUser === 'especialista'" class="btn-accion shadow-sm mx-2" (click)="finalizarTurno(row)">
+                    <button mat-button *ngIf="row.estado === 'aceptado' && this.rolUser === 'especialista'" class="btn-accion shadow-sm me-3" (click)="finalizarTurno(row)">
                         Finalizar
                     </button>
 
-                    <button mat-button *ngIf="row.comentario" class="btn-accion shadow-sm me-2" (click)="verComentario(row)">
+                    <button mat-button *ngIf="row.comentario" class="btn-accion shadow-sm me-3" (click)="verComentario(row)">
                         {{row.estado === 'finalizado' ? 'Ver reseña' : 'Ver comentario'}}
                     </button>
                     
                     <!-- boton para apciente -->
-                    <button mat-button *ngIf="row.estado === 'finalizado' && this.rolUser === 'paciente' && !row.comentarioPaciente && !row.calificacion" class="btn-accion shadow-sm" (click)="calificarAtencion(row)">
+                    <button mat-button *ngIf="row.estado === 'finalizado' && this.rolUser === 'paciente' && !row.comentarioPaciente && !row.calificacion" class="btn-accion shadow-sm me-3" (click)="calificarAtencion(row)">
                         Calificar atencion
+                    </button>
+                    
+                    <button mat-button *ngIf="row.estado === 'finalizado' && this.rolUser === 'especialista' && !row.historiaClinica" class="btn-accion shadow-sm me-3" (click)="cargarHistoriaClinica(row)">
+                        Cargar historia clinica
+                    </button>
+                    
+                    <button mat-button *ngIf="row.estado === 'finalizado' && row.historiaClinica" class="btn-accion shadow-sm" (click)="verHistoriaClinica(row)">
+                        Ver historia clinica
                     </button>
                 </td>
             </ng-container>
