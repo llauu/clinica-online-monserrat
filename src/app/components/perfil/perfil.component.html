@@ -58,8 +58,8 @@
                 </div>
 
                 <!-- Descargar historia clinica (paciente) -->
-                <div class="w-100 d-flex flex-column align-items-center mt-5">
-                  <button *ngIf="user.rol === 'paciente'" class="btn btn-reg col-4" (click)="descargarHistoriaClinica()">Descargar historia clinica</button>
+                <div class="w-100 d-flex flex-column align-items-center mt-5" *ngIf="user.rol === 'paciente'">
+                  <button class="btn btn-reg col-4" (click)="descargarHistoriaClinica()">Descargar historia clinica</button>
                 
                   <div class="form-floating col-4 mt-3">
                     <select class="form-select" id="especialista" [(ngModel)]="especialistaSeleccionado">
