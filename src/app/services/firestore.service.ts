@@ -84,6 +84,13 @@ export class FirestoreService {
     const snapshot = await this.getDocuments<any>('especialidades');
     return snapshot.docs.map(doc => doc.data());
   }
+  
+  async getLogs() {
+    const logsRef = collection(this.firestore, 'logs');
+    const q = query(logsRef, orderBy('date', 'desc')); // Ordenar por fecha de forma descendente
+    const snapshot = await getDocs(q);
+    return snapshot.docs.map(doc => doc.data());
+  }
 
   async getEspecialistas(specialty?: string): Promise<any[]> {
     const usersCollectionRef = collection(this.firestore, 'usuarios');

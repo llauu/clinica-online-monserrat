@@ -69,11 +69,40 @@
 
     <div class="row mt-4">
       <div class="col-6">
-        <button class="btn btn-custom w-100">Ver registros</button>
+        <button class="btn btn-custom w-100" (click)="verRegistros()">Ver registros</button>
       </div>
       <div class="col-6">
         <button class="btn btn-custom w-100" (click)="downloadPDF()" [disabled]="!verificarFechasColocadas()">Descargar PDF</button>
       </div>
     </div>
+
+    <div *ngIf="verRegistro" class="dialog-overlay">
+      <div class="dialog-box">
+        <h2 class="text-center h1-custom">Registros</h2>
+        <div class="dialog-content">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Dia</th>
+                <th>Horario</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let registro of registros">
+                <td>{{ registro.user }}</td>
+                <td>{{ formatearFechaSoloDia(registro.date) }}</td>
+                <td>{{ formatearHorario(registro.date) }}hs</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="row justify-content-center">
+          <button class="btn btn-log mx-3 col-5 mt-3" (click)="verRegistro = false">Cerrar</button>
+          <button class="btn btn-log mx-3 col-5 mt-3" (click)="downloadCSV()">Descargar CSV</button>
+        </div>
+      </div>
+    </div>
+  
   </div>
   

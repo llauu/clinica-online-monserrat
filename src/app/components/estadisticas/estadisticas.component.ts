@@ -3,11 +3,14 @@ import { Chart } from 'chart.js/auto';
 import { FirestoreService } from '../../services/firestore.service';
 import { FormsModule } from '@angular/forms';
 import { jsPDF } from 'jspdf'; 
+import { NgFor, NgIf } from '@angular/common';
+import { MatDialogModule } from '@angular/material/dialog';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-estadisticas',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, NgIf, NgFor, MatDialogModule],
   templateUrl: './estadisticas.component.html',
   styleUrl: './estadisticas.component.css'
 })
@@ -23,8 +26,37 @@ export class EstadisticasComponent {
   fechaInicioFinalizados: string = '';
   fechaFinFinalizados: string = '';
 
+  verRegistro: boolean = false;
+  registros: any[] = [];
+
 
   constructor(private firestoreService: FirestoreService) {}
+
+  formatearFechaSoloDia(fecha: any): string {
+    if (!fecha) return '';
+    
+    if (fecha && fecha.seconds) {
+      return new Date(fecha.seconds * 1000).toLocaleDateString('es-ES');
+    }
+    
+    return new Date(fecha).toLocaleDateString('es-ES');
+  }
+  
+  formatearHorario(fecha: any): string {
+    if (!fecha) return '';
+    
+    if (fecha && fecha.seconds) {
+      return new Date(fecha.seconds * 1000).toLocaleTimeString('es-ES', {
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+    
+    return new Date(fecha).toLocaleTimeString('es-ES', {
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
 
   ngAfterViewInit() {
     this.firestoreService.getTurnos().then(turnos => {
@@ -257,5 +289,37 @@ export class EstadisticasComponent {
 
   verificarFechasColocadas() {
     return this.fechaInicioSolicitados && this.fechaFinSolicitados && this.fechaInicioFinalizados && this.fechaFinFinalizados;
+  }
+
+
+  // Registros
+  verRegistros() {
+    this.verRegistro = true;
+
+    this.firestoreService.getLogs().then(logs => {
+      console.log(logs);
+      this.registros = logs;
+    });
+  }
+
+  downloadCSV() {
+    const registrosData = this.registros.map(registro => {
+      return {
+        Usuario: registro.user,
+        Fecha: this.formatearFechaSoloDia(registro.date),
+        Hora: this.formatearHorario(registro.date)
+      };
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(registrosData);
+    const csvOutput = XLSX.utils.sheet_to_csv(worksheet);
+
+    const blob = new Blob([csvOutput], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'registros.csv';
+    a.click();
+    URL.revokeObjectURL(url);
   }
 }
