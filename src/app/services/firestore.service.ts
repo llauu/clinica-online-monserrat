@@ -157,6 +157,7 @@ export class FirestoreService {
     const snapshot = await getDocs(turnosQuery);
     return snapshot.docs.map(doc => doc.data());
   }
+  
   async getTurnosFinalizadosPorPaciente(idPaciente: string) {
     const turnosCollectionRef = collection(this.firestore, 'turnos');
     const turnosQuery = query(

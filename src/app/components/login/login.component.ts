@@ -20,6 +20,7 @@ import { FormsModule } from '@angular/forms';
 import { FirestoreService } from '../../services/firestore.service';
 import { ToastrService } from 'ngx-toastr';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { addDoc, collection, Firestore } from '@angular/fire/firestore';
 
 @Component({
   selector: 'app-login',
@@ -41,7 +42,7 @@ import { trigger, transition, style, animate } from '@angular/animations';
     MatIconModule, 
     MatDividerModule,
     MatSelectModule,
-    MatRadioModule
+    MatRadioModule,
   ],
   animations: [
     trigger('slideInOut', [
@@ -59,7 +60,7 @@ export class LoginComponent {
   errorMsg: string = '';
   isLoading: boolean = false;
 
-  constructor(public authService: AuthService, private router: Router, private firestoreService: FirestoreService, private toastrSvc: ToastrService) { }
+  constructor(public authService: AuthService, private router: Router, private firestoreService: FirestoreService, private toastrSvc: ToastrService, private firestore: Firestore) { }
   
   ngOnInit() {
     const errorMsg = sessionStorage.getItem('logoutError');
@@ -88,6 +89,9 @@ export class LoginComponent {
           this.firestoreService.validarEspecialista(res.user.uid)
             .then((data) => {
               if(data) {
+                let col = collection(this.firestore, 'logs');
+                addDoc(col, {'date': new Date(), 'user': res.user.email});
+
                 this.router.navigate(['/home']);
                 this.isLoading = false;
               } else {
@@ -133,24 +137,17 @@ export class LoginComponent {
       });
   }
 
-  // checkAuthState() {
-  //   this.authService.isAuthenticated()
-  //     .then(res => {
-  //       this.isLoggedIn = res;
-
-  //       if(res) {
-  //         console.log('LOGEADO')
-  //         // this.pedidosService.getPedidosPendientes().subscribe((data) => {
-  //         //   this.pedidos = data;
-  //         // });
-  //       }
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     })
-  //     .finally(() => {
-  //     });
-  // }
+  togglePassword(event: any) {
+    console.log(event);
+    const input = event.target.closest('.row').querySelector('input');
+    if (input.type === 'password') {
+      input.type = 'text';
+      event.target.querySelector('.icon').textContent = 'visibility_off';
+    } else {
+      input.type = 'password';
+      event.target.querySelector('.icon').textContent = 'visibility';
+    }
+  }
 
   fillInputs(mail: string, pass: string) {
     this.formLogin.controls['email'].setValue(mail);

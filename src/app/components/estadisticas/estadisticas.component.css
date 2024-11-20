@@ -1,0 +1,33 @@
+.container {
+    padding-top: 160px;
+}
+
+.chart-container {
+    position: relative;
+    height: 300px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+
+.h1-custom {
+    font-weight: 900;
+    font-size: 30px;
+    color: #183058;
+}
+
+.btn-custom {
+    background-color: #183058;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    width: 200px;
+    height: 60px;
+}
+
+
+.btn-custom:hover {
+    background-color: #0056b3;
+    color: white;
+}
+

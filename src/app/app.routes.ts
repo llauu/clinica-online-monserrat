@@ -35,4 +35,7 @@ export const routes: Routes = [
         path: 'pacientes', loadComponent: () => import('./components/pacientes/pacientes.component').then(m => m.PacientesComponent),
         canActivate:[authGuard] 
     },
+    { 
+        path: 'estadisticas', loadComponent: () => import('./components/estadisticas/estadisticas.component').then(m => m.EstadisticasComponent)
+    },
 ];

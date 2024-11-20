@@ -1,0 +1,79 @@
+<div class="container pb-5">
+    <h2 class="text-center h1-custom">Informes & Estadísticas</h2>
+  
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Cantidad de turnos por especialidad</h2>
+            <canvas id="turnosPorEspecialidad"></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Cantidad de turnos por día</h2>
+            <canvas id="turnosPorDia"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Turnos solicitados por médico en un lapso de tiempo</h2>
+
+            <div class="row">
+              <div class="col-6">
+                <label>Desde:</label>
+                <input type="date" [(ngModel)]="fechaInicioSolicitados" (ngModelChange)="onFechaChangeSolicitados()" class="form-control">
+              </div>
+
+              <div class="col-6">
+                <label>Hasta:</label>
+                <input type="date" [(ngModel)]="fechaFinSolicitados" (ngModelChange)="onFechaChangeSolicitados()" class="form-control">
+              </div>
+            </div>
+          
+            <canvas id="turnosPorMedicoSolicitados"></canvas>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title">Turnos finalizados por médico en un lapso de tiempo</h2>
+
+            <div class="row">
+              <div class="col-6">
+                <label>Desde:</label>
+                <input type="date" [(ngModel)]="fechaInicioFinalizados" (ngModelChange)="onFechaChangeFinalizados()" class="form-control">
+              </div>
+
+              <div class="col-6">
+                <label>Hasta:</label>
+                <input type="date" [(ngModel)]="fechaFinFinalizados" (ngModelChange)="onFechaChangeFinalizados()" class="form-control">
+              </div>
+            </div>
+          
+            <canvas id="turnosPorMedicoFinalizados"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-6">
+        <button class="btn btn-custom w-100">Ver registros</button>
+      </div>
+      <div class="col-6">
+        <button class="btn btn-custom w-100" (click)="downloadPDF()" [disabled]="!verificarFechasColocadas()">Descargar PDF</button>
+      </div>
+    </div>
+  </div>
+  
