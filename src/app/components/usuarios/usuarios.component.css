@@ -115,3 +115,40 @@
 .img-btn-sel {
   border-radius: 50%;
 }
+
+.btn-download-csv {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #183058;
+  color: white;
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, transform 0.2s;
+  z-index: 1000;
+}
+
+.btn-download-csv:hover {
+  background-color: #0056b3;
+  transform: scale(1.1);
+}
+
+.btn-download-csv:active {
+  background-color: #004085;
+}
+
+.btn-download-csv i {
+  font-size: 24px;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  font-size: 35px;
+}

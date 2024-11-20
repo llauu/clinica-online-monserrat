@@ -25,6 +25,13 @@
                 </button>
             </div>
         </div>
+        
+        <button 
+          class="btn-download-csv" 
+          (click)="downloadUsuariosCSV()"
+          aria-label="Descargar Usuarios CSV">
+          <mat-icon class="icon">download</mat-icon>
+        </button>
     
         <div *ngIf="usuarioSeleccionado" class="usuario-detail shadow mx-4">
           <h3 class="title-h">Detalles del Usuario</h3>

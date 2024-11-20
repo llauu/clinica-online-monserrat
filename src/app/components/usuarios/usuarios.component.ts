@@ -5,6 +5,7 @@ import { formatDate, NgFor, NgIf } from '@angular/common';
 import { Timestamp } from '@angular/fire/firestore';
 import { TimestampPipe } from '../../pipes/timestamp.pipe';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 export interface UsuarioData {
   id: string;
@@ -15,6 +16,7 @@ export interface UsuarioData {
   email: string;
   rol: string;
   imagenUno: string;
+  obraSocial: string;
   habilitado?: boolean;
 }
 
@@ -24,7 +26,8 @@ export interface UsuarioData {
     imports: [
       NgIf,
       NgFor,
-      TimestampPipe
+      TimestampPipe,
+      MatIconModule
     ],
   templateUrl: './usuarios.component.html',
   styleUrls: ['./usuarios.component.css']
@@ -57,7 +60,6 @@ export class UsuariosComponent {
     }
   }
 
-
   habilitarEspecialista(especialista: UsuarioData) {
     especialista.habilitado = true;
     this.firestoreService.habilitarEspecialista(especialista.id);
@@ -66,7 +68,33 @@ export class UsuariosComponent {
   redirectToRegister(role: string) {
     this.router.navigate(['/registro-admin', role]);
   }
+
+  downloadUsuariosCSV(): void {
+    const usuariosData = this.usuarios.map(usuario => {
+      return {
+        Nombre: usuario.nombre,
+        Apellido: usuario.apellido,
+        DNI: usuario.dni,
+        Edad: usuario.edad,
+        Email: usuario.email,
+        Rol: usuario.rol,
+        ObraSocial: usuario.rol === 'paciente' ? usuario.obraSocial : '-',
+        Habilitado: usuario.rol === 'especialista' ? (usuario.habilitado ? 'Si' : 'No') : '-',
+      };
+    });
   
+    const worksheet = XLSX.utils.json_to_sheet(usuariosData);
+    const csvOutput = XLSX.utils.sheet_to_csv(worksheet);
+  
+    const blob = new Blob([csvOutput], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'usuarios.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
   downloadTurnos(): void {
     const turnos = this.turnosUsuarioSeleccionado.map(turno => ({
       Especialidad: turno.especialidad,
