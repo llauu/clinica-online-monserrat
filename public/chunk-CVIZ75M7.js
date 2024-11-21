@@ -1,0 +1,1 @@
+import{oa as e}from"./chunk-NVPCUW4N.js";var p=(()=>{class r{transform(t){return t?t.charAt(0).toUpperCase()+t.slice(1):""}static{this.\u0275fac=function(i){return new(i||r)}}static{this.\u0275pipe=e({name:"primerLetraMayus",type:r,pure:!0,standalone:!0})}}return r})();export{p as a};

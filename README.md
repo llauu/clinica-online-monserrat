@@ -34,3 +34,7 @@ Accede desde el siguiente [enlace](https://clinica-online-monserrat.web.app/).
 - **Usuarios**<br> Acceso solo permitido para administradores, visualiza todos los usuarios de la clinica.
 ![Alt text](./src/assets/assets-readme/usuarios-1.png?raw=true)
 ![Alt text](./src/assets/assets-readme/usuarios-2.png?raw=true)
+
+- **Informes & Estadísticas**<br> Acceso solo permitido para administradores, visualiza gráficos y estadísticas de nuestro sistema.
+![Alt text](./src/assets/assets-readme/estadisticas.png?raw=true)
+![Alt text](./src/assets/assets-readme/registros.png?raw=true)
