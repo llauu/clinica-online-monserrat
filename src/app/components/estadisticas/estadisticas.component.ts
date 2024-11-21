@@ -291,7 +291,6 @@ export class EstadisticasComponent {
     return this.fechaInicioSolicitados && this.fechaFinSolicitados && this.fechaInicioFinalizados && this.fechaFinFinalizados;
   }
 
-
   // Registros
   verRegistros() {
     this.verRegistro = true;

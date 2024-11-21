@@ -10,16 +10,16 @@
     <div class="paciente-detalles p-3 mt-4" *ngIf="pacienteSeleccionado">
       <h2 class="title-h">Detalles de {{ pacienteSeleccionado.nombre }} {{ pacienteSeleccionado.apellido }}</h2>
       
-      <div class="div-turnos-card">
-        <div *ngFor="let turno of turnosPaciente" [appEstadoTurno]="turno.estado" class="turno-card mx-3">
+      <div class="div-turnos-card row">
+        <div *ngFor="let turno of turnosPaciente" [appEstadoTurno]="turno.estado" class="turno-card mx-3 col-2">
             <p><strong>Especialidad:</strong> {{ turno.especialidad }} </p>
             <p><strong>Fecha:</strong> {{ turno.fecha | timestamp }}</p>
             <p><strong>Hora:</strong> {{ turno.hora }}hs </p>
             <p><strong>Estado:</strong> {{ turno.estado }} </p>
 
-            <div class="row">
-                <button class="resena-button mx-2" (click)="verComentario(turno)">Ver Reseña</button>
-                <button class="resena-button mx-2" (click)="verHistoriaClinica(turno)">Ver Historia Clinica</button>
+            <div class="row justify-content-center">
+                <button class="resena-button w-75" (click)="verComentario(turno)">Ver Reseña</button>
+                <button class="resena-button w-75" *ngIf="turno.estado == 'finalizado'" (click)="verHistoriaClinica(turno)">Ver Historia Clinica</button>
             </div>
           </div>
       </div>

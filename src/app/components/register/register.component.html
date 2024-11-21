@@ -44,7 +44,7 @@
 
                     <div class="col-6 my-3">
                         <label for="edad" class="form-label">Edad</label>
-                        <input type="text" class="form-control" id="edad" [formControl]="form.controls.edad">
+                        <input type="text" class="form-control" id="edad" [formControl]="form.controls.edad" appSoloNumeros>
                         <div class="text-danger mt-1" *ngIf="form.get('edad')?.touched">
                             <p *ngIf="form.controls.edad.getError('required')" class="error-msg">El edad es requerida.</p>
                             <p *ngIf="form.controls.edad.getError('pattern')" class="error-msg">La edad no es valida.</p>
@@ -53,7 +53,7 @@
 
                     <div class="col-6 my-3">
                         <label for="dni" class="form-label">DNI</label>
-                        <input type="text" class="form-control" id="dni" [formControl]="form.controls.dni">
+                        <input type="text" class="form-control" id="dni" [formControl]="form.controls.dni" appSoloNumeros>
                         <div class="text-danger mt-1" *ngIf="form.get('dni')?.touched">
                             <p *ngIf="form.controls.dni.getError('required')" class="error-msg">El DNI es requerido.</p>
                             <p *ngIf="form.controls.dni.getError('pattern')" class="error-msg">El DNI no es valido.</p>

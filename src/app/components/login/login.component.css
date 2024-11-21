@@ -10,6 +10,9 @@
     margin: 0;
 }
 
+.form-pass {
+    width: 93%;
+}
 
 .card-header {
     background-color: #E4E4E4;

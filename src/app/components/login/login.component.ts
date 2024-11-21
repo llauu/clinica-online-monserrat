@@ -21,6 +21,7 @@ import { FirestoreService } from '../../services/firestore.service';
 import { ToastrService } from 'ngx-toastr';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { addDoc, collection, Firestore } from '@angular/fire/firestore';
+import { MostrarEsconderPassDirective } from '../../directives/mostrar-esconder-pass.directive';
 
 @Component({
   selector: 'app-login',
@@ -43,6 +44,7 @@ import { addDoc, collection, Firestore } from '@angular/fire/firestore';
     MatDividerModule,
     MatSelectModule,
     MatRadioModule,
+    MostrarEsconderPassDirective
   ],
   animations: [
     trigger('slideInOut', [
