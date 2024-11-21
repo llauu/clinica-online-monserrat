@@ -13,6 +13,7 @@ import { DialogoComentarioComponent } from '../dialogo-comentario/dialogo-coment
 import { DialogoHistoriaClinicaComponent } from '../dialogo-historia-clinica/dialogo-historia-clinica.component';
 import { EstadoTurnoDirective } from '../../directives/estado-turno.directive';
 import { MatDialog } from '@angular/material/dialog';
+import { PrimerLetraMayusPipe } from '../../pipes/primer-letra-mayus.pipe';
 
 export interface UsuarioData {
   id: string;
@@ -47,7 +48,8 @@ export interface TurnoData {
     TimestampPipe,
     DialogoComentarioComponent,
     DialogoHistoriaClinicaComponent,
-    EstadoTurnoDirective
+    EstadoTurnoDirective,
+    PrimerLetraMayusPipe
   ],
   templateUrl: './pacientes.component.html',
   styleUrls: ['./pacientes.component.css']

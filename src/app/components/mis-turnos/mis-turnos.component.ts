@@ -14,6 +14,7 @@ import { DialogoComentarioComponent } from '../dialogo-comentario/dialogo-coment
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { DialogoHistoriaClinicaComponent } from '../dialogo-historia-clinica/dialogo-historia-clinica.component';
+import { PrimerLetraMayusPipe } from '../../pipes/primer-letra-mayus.pipe';
 
 
 export interface TurnoData {
@@ -43,7 +44,8 @@ export interface TurnoData {
     NgIf,
     TimestampPipe,
     EstadoTurnoDirective,
-    FormsModule
+    FormsModule,
+    PrimerLetraMayusPipe
   ],
   templateUrl: './mis-turnos.component.html',
   styleUrl: './mis-turnos.component.css'

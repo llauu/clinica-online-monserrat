@@ -102,7 +102,10 @@
                     </div>
 
                     <div class="col-6 my-3">
-                        <label for="pass" class="form-label">Contraseña</label>
+                        <div class="d-flex align-items-center">
+                            <label for="pass" class="form-label">Contraseña</label>
+                            <label class="form-label ms-3" [style.color]="(form.controls.pass.value | seguridadPass).color">{{ (form.controls.pass.value | seguridadPass).mensaje }}</label>
+                        </div>
                         <input type="password" class="form-control" id="pass" [formControl]="form.controls.pass">
                         <div class="text-danger" *ngIf="form.get('pass')?.touched">
                             <p *ngIf="form.controls.pass.getError('required')" class="error-msg">La contraseña es requerida.</p>

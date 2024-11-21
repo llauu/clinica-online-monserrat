@@ -6,11 +6,12 @@ import { FirestoreService } from '../../services/firestore.service';
 import { HorariosDirective } from '../../directives/horarios.directive';
 import { PdfService } from '../../services/pdf.service';
 import { trigger, transition, style, animate } from '@angular/animations';
+import { PrimerLetraMayusPipe } from '../../pipes/primer-letra-mayus.pipe';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [NgIf, NgFor, FormsModule, HorariosDirective],
+  imports: [NgIf, NgFor, FormsModule, HorariosDirective, PrimerLetraMayusPipe],
   animations: [
     trigger('slideInOut', [
       transition(':enter', [

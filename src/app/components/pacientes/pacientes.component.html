@@ -15,7 +15,7 @@
             <p><strong>Especialidad:</strong> {{ turno.especialidad }} </p>
             <p><strong>Fecha:</strong> {{ turno.fecha | timestamp }}</p>
             <p><strong>Hora:</strong> {{ turno.hora }}hs </p>
-            <p><strong>Estado:</strong> {{ turno.estado }} </p>
+            <p><strong>Estado:</strong> {{ turno.estado | primerLetraMayus }} </p>
 
             <div class="row justify-content-center">
                 <button class="resena-button w-75" (click)="verComentario(turno)">Ver Reseña</button>

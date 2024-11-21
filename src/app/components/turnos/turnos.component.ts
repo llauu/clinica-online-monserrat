@@ -11,6 +11,7 @@ import { DialogoComentarioComponent } from '../dialogo-comentario/dialogo-coment
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { EstadoTurnoDirective } from '../../directives/estado-turno.directive';
+import { PrimerLetraMayusPipe } from '../../pipes/primer-letra-mayus.pipe';
 
 
 export interface TurnoData {
@@ -36,7 +37,8 @@ export interface TurnoData {
     NgIf,
     TimestampPipe,
     MatButtonModule,
-    EstadoTurnoDirective
+    EstadoTurnoDirective,
+    PrimerLetraMayusPipe
   ],
   templateUrl: './turnos.component.html',
   styleUrl: './turnos.component.css'

@@ -12,11 +12,12 @@ import { FirestoreService } from '../../services/firestore.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { SoloNumerosDirective } from '../../directives/solo-numeros.directive';
+import { SeguridadPassPipe } from '../../pipes/seguridad-pass.pipe';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, NgIf, NgxCaptchaModule, NgFor, MatProgressSpinnerModule, SoloNumerosDirective],
+  imports: [ReactiveFormsModule, NgIf, NgxCaptchaModule, NgFor, MatProgressSpinnerModule, SoloNumerosDirective, SeguridadPassPipe],
   animations: [
     trigger('slideInOut', [
       transition(':enter', [

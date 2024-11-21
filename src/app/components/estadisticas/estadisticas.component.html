@@ -23,7 +23,7 @@
 
     <div class="row mt-4">
       <div class="col-md-6">
-        <div class="card">
+        <div class="card card-lapso">
           <div class="card-body">
             <h2 class="card-title">Turnos solicitados por médico en un lapso de tiempo</h2>
 
@@ -45,7 +45,7 @@
       </div>
       
       <div class="col-md-6">
-        <div class="card">
+        <div class="card card-lapso">
           <div class="card-body">
             <h2 class="card-title">Turnos finalizados por médico en un lapso de tiempo</h2>
 
@@ -92,7 +92,7 @@
               <tr *ngFor="let registro of registros">
                 <td>{{ registro.user }}</td>
                 <td>{{ formatearFechaSoloDia(registro.date) }}</td>
-                <td>{{ formatearHorario(registro.date) }}hs</td>
+                <td>{{ formatearHorario(registro.date) }} hs</td>
               </tr>
             </tbody>
           </table>

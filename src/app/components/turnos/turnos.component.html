@@ -35,7 +35,7 @@
             
             <ng-container matColumnDef="estado">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="th-p"> <b>Estado</b> </th>
-                <td mat-cell *matCellDef="let row" class="fila-turno" [appEstadoTurno]="row.estado"> {{row.estado}} </td>
+                <td mat-cell *matCellDef="let row" class="fila-turno" [appEstadoTurno]="row.estado"> {{row.estado | primerLetraMayus}} </td>
             </ng-container>
             
             <ng-container matColumnDef="acciones">
